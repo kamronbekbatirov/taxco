@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление записью - TAX CONSENSUS</title>
+    <link rel="icon" href="/favicon/favicon.ico" sizes="any">
+    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg">
+    <link rel="apple-touch-icon" href="/favicon/apple-touch-icon.png">
+    <link rel="stylesheet" href="../styles.css?v=3">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        .manage-container {
+            max-width: 800px;
+            margin: 60px auto;
+            padding: 40px 20px;
+        }
+        
+        .booking-card {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .booking-header {
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .booking-header h1 {
+            color: #2c5282;
+            margin: 0 0 10px 0;
+        }
+        
+        .booking-id {
+            color: #718096;
+            font-size: 14px;
+        }
+        
+        .booking-details {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 30px;
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        
+        .detail-label {
+            font-weight: 600;
+            color: #2c5282;
+        }
+        
+        .detail-value {
+            color: #2d3748;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .status-confirmed {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+        
+        .status-cancelled {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+        
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 15px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .btn-reschedule {
+            background: #2c5282;
+            color: white;
+        }
+        
+        .btn-reschedule:hover {
+            background: #1a365d;
+        }
+        
+        .btn-cancel {
+            background: #fff;
+            color: #e53e3e;
+            border: 2px solid #e53e3e;
+        }
+        
+        .btn-cancel:hover {
+            background: #e53e3e;
+            color: white;
+        }
+        
+        .btn:disabled {
+            background: #cbd5e0;
+            color: #a0aec0;
+            cursor: not-allowed;
+            border: none;
+        }
+        
+        .reschedule-form {
+            display: none;
+            margin-top: 30px;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 4px;
+        }
+        
+        .reschedule-form.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #2c5282;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .time-slot {
+            padding: 12px;
+            border: 2px solid #cbd5e0;
+            border-radius: 4px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        .time-slot:hover {
+            border-color: #2c5282;
+        }
+        
+        .time-slot.selected {
+            background: #2c5282;
+            color: white;
+        }
+        
+        .message {
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        
+        .message.success {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+        
+        .message.error {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #718096;
+        }
+        
+        @media (max-width: 768px) {
+            .booking-card {
+                padding: 20px;
+            }
+            
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            .detail-row {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="manage-container">
+        <div id="loading" class="loading">Загрузка данных о записи...</div>
+        
+        <div id="booking-card" class="booking-card" style="display: none;">
+            <div id="message-container"></div>
+            
+            <div class="booking-header">
+                <h1>Управление записью</h1>
+                <div class="booking-id">Номер записи: <strong id="booking-id-display"></strong></div>
+            </div>
+            
+            <div class="booking-details">
+                <div class="detail-row">
+                    <span class="detail-label">Имя:</span>
+                    <span class="detail-value" id="detail-name"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Email:</span>
+                    <span class="detail-value" id="detail-email"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Телефон:</span>
+                    <span class="detail-value" id="detail-phone"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Дата:</span>
+                    <span class="detail-value" id="detail-date"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Время:</span>
+                    <span class="detail-value" id="detail-time"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Статус:</span>
+                    <span class="detail-value" id="detail-status"></span>
+                </div>
+            </div>
+            
+            <div id="action-buttons" class="action-buttons">
+                <button id="reschedule-btn" class="btn btn-reschedule">Перенести запись</button>
+                <button id="cancel-btn" class="btn btn-cancel">Отменить запись</button>
+            </div>
+            
+            <div id="reschedule-form" class="reschedule-form">
+                <h3>Выберите новое время</h3>
+                <div class="form-group">
+                    <label for="new-date">Новая дата:</label>
+                    <input type="date" id="new-date">
+                </div>
+                <div class="form-group">
+                    <label>Новое время:</label>
+                    <div id="new-time-slots" class="time-slots">
+                        <div class="loading">Выберите дату...</div>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <button id="confirm-reschedule-btn" class="btn btn-reschedule">Подтвердить перенос</button>
+                    <button id="cancel-reschedule-btn" class="btn btn-cancel">Отмена</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const API_URL = 'api.php';
+        let bookingData = null;
+        let selectedNewTime = null;
+        
+        // Получаем ID из URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const bookingId = urlParams.get('id');
+        
+        if (!bookingId) {
+            showError('Не указан номер записи');
+        } else {
+            loadBooking();
+        }
+        
+        // Загрузка данных о бронировании
+        async function loadBooking() {
+            try {
+                const response = await fetch(`${API_URL}?action=get_booking&booking_id=${bookingId}`);
+                const data = await response.json();
+                
+                if (!data.success) {
+                    throw new Error(data.error || 'Не удалось загрузить данные');
+                }
+                
+                bookingData = data.booking;
+                displayBooking();
+            } catch (error) {
+                showError(error.message);
+            }
+        }
+        
+        // Отображение данных бронирования
+        function displayBooking() {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('booking-card').style.display = 'block';
+            
+            document.getElementById('booking-id-display').textContent = bookingData.booking_id;
+            document.getElementById('detail-name').textContent = bookingData.client_name;
+            document.getElementById('detail-email').textContent = bookingData.client_email;
+            document.getElementById('detail-phone').textContent = bookingData.client_phone;
+            document.getElementById('detail-date').textContent = formatDate(bookingData.booking_date);
+            document.getElementById('detail-time').textContent = bookingData.booking_time.substring(0, 5);
+            
+            const statusElement = document.getElementById('detail-status');
+            const statusText = bookingData.status === 'confirmed' ? 'Подтверждено' : 'Отменено';
+            statusElement.innerHTML = `<span class="status-badge status-${bookingData.status}">${statusText}</span>`;
+            
+            // Если запись отменена, скрываем кнопки действий
+            if (bookingData.status === 'cancelled') {
+                document.getElementById('action-buttons').style.display = 'none';
+            }
+        }
+        
+        // Форматирование даты
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return date.toLocaleDateString('ru-RU', options);
+        }
+        
+        // Обработчики кнопок
+        document.getElementById('reschedule-btn')?.addEventListener('click', showRescheduleForm);
+        document.getElementById('cancel-reschedule-btn')?.addEventListener('click', hideRescheduleForm);
+        document.getElementById('cancel-btn')?.addEventListener('click', confirmCancel);
+        document.getElementById('new-date')?.addEventListener('change', loadNewTimeSlots);
+        document.getElementById('confirm-reschedule-btn')?.addEventListener('click', confirmReschedule);
+        
+        // Показать форму переноса
+        function showRescheduleForm() {
+            document.getElementById('reschedule-form').classList.add('active');
+            
+            // Устанавливаем минимальную дату
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('new-date').min = today;
+        }
+        
+        // Скрыть форму переноса
+        function hideRescheduleForm() {
+            document.getElementById('reschedule-form').classList.remove('active');
+            selectedNewTime = null;
+        }
+        
+        // Загрузка доступных слотов для переноса
+        async function loadNewTimeSlots() {
+            const date = document.getElementById('new-date').value;
+            const slotsContainer = document.getElementById('new-time-slots');
+            
+            if (!date) return;
+            
+            slotsContainer.innerHTML = '<div class="loading">Загрузка...</div>';
+            
+            try {
+                const response = await fetch(`${API_URL}?action=get_available_slots&date=${date}`);
+                const data = await response.json();
+                
+                if (!data.success || !data.slots.length) {
+                    slotsContainer.innerHTML = '<div class="error">Нет доступных слотов</div>';
+                    return;
+                }
+                
+                slotsContainer.innerHTML = '';
+                data.slots.forEach(slot => {
+                    const slotEl = document.createElement('div');
+                    slotEl.className = 'time-slot';
+                    slotEl.textContent = slot.display;
+                    slotEl.dataset.time = slot.time;
+                    slotEl.addEventListener('click', () => selectNewTimeSlot(slotEl, slot.time));
+                    slotsContainer.appendChild(slotEl);
+                });
+            } catch (error) {
+                slotsContainer.innerHTML = '<div class="error">Ошибка загрузки</div>';
+            }
+        }
+        
+        // Выбор нового временного слота
+        function selectNewTimeSlot(element, time) {
+            document.querySelectorAll('#new-time-slots .time-slot').forEach(el => {
+                el.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            selectedNewTime = time;
+        }
+        
+        // Подтверждение переноса
+        async function confirmReschedule() {
+            const newDate = document.getElementById('new-date').value;
+            
+            if (!newDate || !selectedNewTime) {
+                showMessage('Выберите новую дату и время', 'error');
+                return;
+            }
+            
+            if (confirm('Перенести запись на ' + formatDate(newDate) + ' в ' + selectedNewTime.substring(0, 5) + '?')) {
+                try {
+                    const response = await fetch(`${API_URL}?action=reschedule_booking`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            booking_id: bookingId,
+                            new_date: newDate,
+                            new_time: selectedNewTime
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (!data.success) {
+                        throw new Error(data.error);
+                    }
+                    
+                    showMessage('Запись успешно перенесена! Вы получите подтверждение на email.', 'success');
+                    setTimeout(() => location.reload(), 2000);
+                } catch (error) {
+                    showMessage(error.message, 'error');
+                }
+            }
+        }
+        
+        // Подтверждение отмены
+        async function confirmCancel() {
+            if (confirm('Вы уверены, что хотите отменить эту запись?')) {
+                try {
+                    const response = await fetch(`${API_URL}?action=cancel_booking`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ booking_id: bookingId })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (!data.success) {
+                        throw new Error(data.error);
+                    }
+                    
+                    showMessage('Запись успешно отменена. Вы получите подтверждение на email.', 'success');
+                    setTimeout(() => location.reload(), 2000);
+                } catch (error) {
+                    showMessage(error.message, 'error');
+                }
+            }
+        }
+        
+        // Показать сообщение
+        function showMessage(text, type) {
+            const container = document.getElementById('message-container');
+            container.innerHTML = `<div class="message ${type}">${text}</div>`;
+            container.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Показать ошибку при загрузке
+        function showError(text) {
+            document.getElementById('loading').innerHTML = `
+                <div class="message error">${text}</div>
+                <p style="text-align: center; margin-top: 20px;">
+                    <a href="/booking.html" style="color: #2c5282;">Вернуться к записи</a>
+                </p>
+            `;
+        }
+    </script>
+</body>
+</html>
+
+
+

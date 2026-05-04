@@ -1,0 +1,22 @@
+# PHP runtime / local config
+booking/config.php
+*.db
+*.sqlite
+*.sqlite3
+
+# logs
+*.log
+error_log
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# secrets
+.env
+.env.*
+!.env.example

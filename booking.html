@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-translate="booking-title">Запись на консультацию - TAX CONSENSUS</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Запишитесь на налоговую консультацию в TAX CONSENSUS онлайн. Выберите удобное время для встречи с налоговым консультантом в Ташкенте.">
+    <meta name="keywords" content="запись на консультацию, налоговая консультация онлайн, TAX CONSENSUS booking, taxco запись">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://taxco.uz/booking.html">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://taxco.uz/booking.html">
+    <meta property="og:title" content="Запись на консультацию - TAX CONSENSUS">
+    <meta property="og:description" content="Запишитесь на налоговую консультацию онлайн. Выберите удобное время для встречи.">
+    <meta property="og:image" content="https://taxco.uz/building-background.jpg">
+    
+    <link rel="icon" href="/favicon/favicon.ico" sizes="any">
+    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg">
+    <link rel="apple-touch-icon" href="/favicon/apple-touch-icon.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
+    <link rel="stylesheet" href="styles.css?v=3">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        .booking-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .booking-form {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #2c5282;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #2c5282;
+            box-shadow: 0 0 0 3px rgba(44, 82, 130, 0.1);
+        }
+        
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .time-slot {
+            padding: 12px;
+            border: 2px solid #cbd5e0;
+            border-radius: 4px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        .time-slot:hover {
+            border-color: #2c5282;
+            background: #f7fafc;
+        }
+        
+        .time-slot.selected {
+            background: #2c5282;
+            color: white;
+            border-color: #2c5282;
+        }
+        
+        .time-slot.unavailable {
+            background: #e2e8f0;
+            color: #a0aec0;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: #2c5282;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .submit-btn:hover {
+            background: #1a365d;
+        }
+        
+        .submit-btn:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+        }
+        
+        .success-message,
+        .error-message {
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        
+        .success-message {
+            background: #c6f6d5;
+            color: #22543d;
+            border: 1px solid #9ae6b4;
+        }
+        
+        .error-message {
+            background: #fed7d7;
+            color: #742a2a;
+            border: 1px solid #fc8181;
+        }
+        
+        .booking-info {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            border-left: 4px solid #2c5282;
+        }
+        
+        .booking-info h3 {
+            margin-top: 0;
+            color: #2c5282;
+        }
+        
+        .booking-info ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        
+        .booking-info li {
+            margin: 5px 0;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #718096;
+        }
+        
+        @media (max-width: 768px) {
+            .booking-form {
+                padding: 20px;
+            }
+            
+            .time-slots {
+                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body class="internal-page">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="about.html" class="nav-link" data-translate="nav-about">О НАС</a>
+                </li>
+                <li class="nav-item">
+                    <a href="services.html" class="nav-link" data-translate="nav-services">УСЛУГИ</a>
+                </li>
+                <li class="nav-item">
+                    <a href="pricing.html" class="nav-link" data-translate="nav-pricing">ЦЕНЫ</a>
+                </li>
+                <li class="nav-item">
+                    <a href="news.html" class="nav-link" data-translate="nav-news">НОВОСТИ И ПУБЛИКАЦИИ</a>
+                </li>
+                <li class="nav-item">
+                    <a href="contact.html" class="nav-link" data-translate="nav-contact">КОНТАКТЫ</a>
+                </li>
+                <li class="nav-item">
+                    <a href="booking.html" class="nav-link active" data-translate="nav-booking">ЗАПИСЬ</a>
+                </li>
+            </ul>
+            <div class="nav-right">
+                <div class="language-selector">
+                    <select id="language-select">
+                        <option value="ru">RU</option>
+                        <option value="uz">UZ</option>
+                        <option value="en">EN</option>
+                    </select>
+                </div>
+            </div>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <div class="page-header-content">
+            <a href="index.html" style="color: white; text-decoration: none;">
+                <h1 style="font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 400; letter-spacing: 3px; text-transform: uppercase; margin: 0;">Tax Consensus</h1>
+            </a>
+        </div>
+        <div class="language-selector page-lang-selector">
+            <select id="page-language-select">
+                <option value="ru">RU</option>
+                <option value="uz">UZ</option>
+                <option value="en">EN</option>
+            </select>
+        </div>
+        <div class="page-hamburger">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+        <div class="page-mobile-menu">
+            <div class="mobile-menu-close">✕</div>
+            <a href="about.html" data-translate="nav-about">О НАС</a>
+            <a href="services.html" data-translate="nav-services">УСЛУГИ</a>
+            <a href="pricing.html" data-translate="nav-pricing">ЦЕНЫ</a>
+            <a href="news.html" data-translate="nav-news">НОВОСТИ И ПУБЛИКАЦИИ</a>
+            <a href="contact.html" data-translate="nav-contact">КОНТАКТЫ</a>
+            <a href="booking.html" data-translate="nav-booking">ЗАПИСЬ</a>
+        </div>
+        <div class="page-nav-right">
+            <nav class="mini-nav">
+                <a href="about.html" data-translate="nav-about">О НАС</a>
+                <a href="services.html" data-translate="nav-services">УСЛУГИ</a>
+                <a href="pricing.html" data-translate="nav-pricing">ЦЕНЫ</a>
+                <a href="news.html" data-translate="nav-news">НОВОСТИ И ПУБЛИКАЦИИ</a>
+                <a href="contact.html" data-translate="nav-contact">КОНТАКТЫ</a>
+                <a href="booking.html" class="active" data-translate="nav-booking">ЗАПИСЬ</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Page Content -->
+    <main class="page">
+        <div class="page-content">
+            <h1 class="page-title" data-translate="booking-header">Запись на консультацию</h1>
+            
+            <!-- Booking Container -->
+            <div class="booking-container">
+                <div class="booking-info">
+                    <h3 data-translate="booking-info-title">Информация о записи</h3>
+                    <ul>
+                        <li data-translate="booking-info-1">Рабочие дни: понедельник - пятница</li>
+                        <li data-translate="booking-info-2">Рабочее время: 10:00 - 18:00</li>
+                        <li data-translate="booking-info-3">Обеденный перерыв: 13:00 - 14:00</li>
+                        <li data-translate="booking-info-4">Продолжительность консультации: 1 час</li>
+                        <li data-translate="booking-info-5">Вы получите email с подтверждением записи</li>
+                    </ul>
+                </div>
+
+                <div class="booking-form">
+                    <div id="success-message" class="success-message" style="display: none;"></div>
+                    <div id="error-message" class="error-message" style="display: none;"></div>
+
+                    <form id="booking-form">
+                        <div class="form-group">
+                            <label for="name" data-translate="booking-name">Ваше имя *</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email" data-translate="booking-email">Email *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone" data-translate="booking-phone">Телефон *</label>
+                            <input type="tel" id="phone" name="phone" placeholder="+998 90 000 00 00" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="date" data-translate="booking-date">Дата консультации *</label>
+                            <input type="date" id="date" name="date" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label data-translate="booking-time">Выберите время *</label>
+                            <div id="time-slots" class="time-slots">
+                                <div class="loading" data-translate="booking-loading">Выберите дату...</div>
+                            </div>
+                            <input type="hidden" id="time" name="time" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="notes" data-translate="booking-notes">Дополнительная информация (необязательно)</label>
+                            <textarea id="notes" name="notes" rows="3"></textarea>
+                        </div>
+
+                        <button type="submit" class="submit-btn" data-translate="booking-submit">Записаться на консультацию</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js?v=15"></script>
+    <script src="booking/booking.js?v=2"></script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+# Enable PHP processing
+<FilesMatch \.php$>
+    SetHandler application/x-httpd-php
+</FilesMatch>
+
+# Security headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>
+
+# Enable rewrite engine
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+</IfModule>
+
+# Protect sensitive files
+<FilesMatch "(\.db|\.sqlite|\.sqlite3)$">
+    Require all denied
+</FilesMatch>
+
+# UTF-8 encoding
+AddDefaultCharset UTF-8
+
+
+

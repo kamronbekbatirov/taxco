@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://taxco.uz/sitemap.xml
+
+
+
+
+
+
