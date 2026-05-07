@@ -93,6 +93,54 @@ php -S 127.0.0.1:8000
 └── .htaccess
 ```
 
+---
+
+## For contributors / AI agents
+
+> A short technical orientation for anyone (human or AI) being handed this repo for the first time.
+
+### Mental model
+A **framework-free** corporate marketing site for a tax-advisory firm. Static HTML across seven pages, one shared `styles.css`, one shared `script.js`. The site is deliberately built to outlast its developers — no npm install, no bundler, no compile step, no node_modules. Adding *any* runtime dependency is a regression.
+
+The optional booking subsystem under `booking/` is a separate, equally-self-contained PHP + SQLite app that the front-end calls via AJAX.
+
+### Where things live
+
+| You want to … | Open … |
+| --- | --- |
+| Add or rewrite copy on a page | The matching `*.html`. Translatable strings carry `data-translate="<key>"`. |
+| Add a new translatable string | Find the right page, wrap the element with `data-translate`, then add the key to the `translations` object at the bottom of `script.js` (in `ru`, `uz`, **and** `en`). |
+| Change visual styling | `styles.css`. There is no other stylesheet (per-page tweaks live in `<style>` at the top of each HTML). |
+| Tweak header animation, language toggle, smooth scroll | `script.js`. The whole script is plain ES5/ES6 — no modules. |
+| Touch booking | Everything inside `booking/`: `api.php` (server), `booking.js` (client), `manage.html` (admin), `config.example.php` (per-deploy settings). |
+| Reconfigure working hours, lunch, weekends | `booking/config.php` — copy from `config.example.php` on first deploy. |
+| Update SEO meta or Open Graph | The `<head>` of each HTML page. The site relies on per-page hreflang. |
+
+### Booking API quick reference
+
+`booking/api.php?action=<X>` over JSON:
+
+```
+get_available_slots   ?date=YYYY-MM-DD       → list of free slots
+create_booking        POST {name,phone,...}  → reserves + emails confirmation
+get_booking           ?id=<uuid>             → single booking
+cancel_booking        POST {id, token}       → frees the slot
+reschedule_booking    POST {id, new_slot}    → moves to a new time
+get_ics               ?id=<uuid>             → .ics calendar file
+```
+
+State lives in `booking/data.db` (SQLite, gitignored). Schema bootstraps on first request.
+
+### Conventions and gotchas
+
+- **No build step. No package.json. No npm.** Anyone cloning this expects to `python3 -m http.server` and have it work. Don't introduce a bundler.
+- **Three locales must move together.** Every `data-translate` key must exist in `translations.ru`, `translations.uz`, and `translations.en`. A missing key falls back to the raw key string and looks broken.
+- **The booking PHP is currently disabled in production** by `@php → 403` in the live Caddy config. The PHP code is shipped here so anyone can self-host the full experience, but `taxco.uz` itself routes booking through a different channel — don't assume the production site exercises the PHP.
+- **`.htaccess` is for Apache hosts.** It denies access to `*.db`, `*.sql`, `*.bak`, and sets baseline security headers. Caddy hosts use the snippet at the bottom of this README instead — both must stay in sync if you tighten one.
+- **`SEO_ОТЧЕТ.txt` and `BOOKING_SYSTEM_GUIDE.txt` are Russian-language operator docs.** Keep them updated alongside English README changes when the corresponding subsystem changes.
+- **The favicon set is generated.** Don't hand-edit individual files in `favicon/` — regenerate from a single source SVG.
+- **Vanity domain is `taxco.uz`.** All canonical URLs, sitemap entries, and Open Graph tags reference it. If the domain changes, sweep every HTML head + `sitemap.xml` + `robots.txt`.
+
 ## License
 
 [MIT](LICENSE)
