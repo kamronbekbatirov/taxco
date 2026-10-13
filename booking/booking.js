@@ -1,6 +1,6 @@
 // Booking system JavaScript
 (function() {
-    const API_URL = '/booking/api.php';
+    const API_URL = '/api/public/booking';
     let selectedTimeSlot = null;
     let currentLanguage = localStorage.getItem('preferred-language') || 'ru';
 
@@ -34,7 +34,7 @@
         timeSlotsContainer.innerHTML = '<div class="loading" data-translate="booking-loading">Загрузка...</div>';
 
         try {
-            const response = await fetch(`${API_URL}?action=get_available_slots&date=${date}`);
+            const response = await fetch(`${API_URL}/slots?date=${encodeURIComponent(date)}`);
             const data = await response.json();
 
             if (!data.success) {
@@ -122,7 +122,8 @@
             date: document.getElementById('date').value,
             time: selectedTimeSlot,
             notes: document.getElementById('notes').value,
-            language: currentLanguage
+            language: currentLanguage,
+            website: (document.getElementById('website') || {}).value || ''
         };
 
         // Отключаем кнопку и показываем загрузку
@@ -136,7 +137,7 @@
         submitBtn.textContent = loadingTexts[currentLanguage];
 
         try {
-            const response = await fetch(`${API_URL}?action=create_booking`, {
+            const response = await fetch(API_URL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -152,9 +153,9 @@
 
             // Показываем сообщение об успехе
             const successTexts = {
-                'ru': `Запись успешно создана! Номер вашей записи: <strong>${data.booking_id}</strong>. Вы получите подтверждение на email. Вы можете управлять своей записью по ссылке из письма.`,
-                'uz': `Yozuv muvaffaqiyatli yaratildi! Yozuv raqamingiz: <strong>${data.booking_id}</strong>. Emailga tasdiqlash keladi. Xat havolasidan yozuvni boshqarishingiz mumkin.`,
-                'en': `Booking created successfully! Your booking ID: <strong>${data.booking_id}</strong>. You will receive a confirmation email. You can manage your booking using the link from the email.`
+                'ru': `Запись успешно создана! Номер вашей записи: <strong>${data.booking_id}</strong>. Консультант свяжется с вами для подтверждения.`,
+                'uz': `Yozuv muvaffaqiyatli yaratildi! Yozuv raqamingiz: <strong>${data.booking_id}</strong>. Maslahatchi tasdiqlash uchun siz bilan bog'lanadi.`,
+                'en': `Booking created successfully! Your booking ID: <strong>${data.booking_id}</strong>. A consultant will contact you to confirm.`
             };
             showSuccess(successTexts[currentLanguage]);
 

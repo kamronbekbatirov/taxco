@@ -1,0 +1,25 @@
+
+.news-feed { max-width: 900px; margin: 40px auto 0; display: grid; gap: 24px; text-align: left; }
+.news-card { display: block; background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 28px 32px;
+  text-decoration: none; color: #333; transition: box-shadow .2s ease, transform .2s ease; }
+.news-card:hover { box-shadow: 0 6px 18px rgba(0,0,0,.08); transform: translateY(-2px); }
+.news-card h3 { font-family: 'Playfair Display', serif; font-weight: 400; font-size: 1.45rem; margin: 6px 0 10px; }
+.news-card p { color: #555; margin: 0; }
+.news-date { display: block; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; color: #888; }
+.news-more { display: inline-block; margin-top: 14px; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; color: #0088cc; }
+.news-article { max-width: 820px; margin: 0 auto; }
+.news-back { display: inline-block; margin-top: 40px; font-size: 12px; letter-spacing: 1.5px; color: #666; text-decoration: none; }
+.news-back::before { content: '← '; }
+.news-title { margin-top: 12px !important; line-height: 1.25; }
+.news-body { font-size: 1.05rem; line-height: 1.75; color: #333; }
+.news-body h4 { font-family: 'Playfair Display', serif; font-weight: 400; font-size: 1.4rem; margin: 32px 0 12px; }
+.news-body p { margin: 0 0 16px; }
+.news-body ul { margin: 0 0 16px 22px; }
+.news-body a { color: #0088cc; }
+.news-body .table { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: .95rem; }
+.news-body .table th, .news-body .table td { border: 1px solid #e0e0e0; padding: 8px 10px; text-align: left; }
+.news-tg { margin-top: 40px; }
+.site-title-link { color: #fff; text-decoration: none; }
+.site-title { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 400; letter-spacing: 3px;
+  text-transform: uppercase; margin: 0; color: #fff; }
+@media (max-width: 600px) { .news-card { padding: 22px 20px; } .news-card h3 { font-size: 1.2rem; } }
