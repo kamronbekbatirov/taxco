@@ -659,7 +659,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Replace option labels in language selects with emoji flags
 function updateLanguageOptionLabels() {
-    const labelByValue = { ru: '🇷🇺 RU', uz: '🇺🇿 UZ', en: '🇬🇧 EN' };
+    // Без эмодзи-флагов: Windows рисует их буквами, и поле обрезало «RU»
+    const labelByValue = { ru: 'RU', uz: 'UZ', en: 'EN' };
     const selects = [document.getElementById('language-select'), document.getElementById('page-language-select')].filter(Boolean);
     selects.forEach(select => {
         Array.from(select.options).forEach(opt => {
