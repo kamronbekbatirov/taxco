@@ -1566,3 +1566,19 @@ body.home-page {
     .page-header .page-lang-selector .lang-menu { right: auto; left: 0; }
     .lang-btn { padding: 8px 10px 8px 9px; font-size: 12.5px; }
 }
+
+/* ---------- Мобильное меню: длинный пункт («Новости и публикации») — по центру и с полями, на узких экранах мельче ---------- */
+.mobile-menu a,
+.page-header .page-mobile-menu a {
+    box-sizing: border-box;
+    max-width: 100%;
+    padding: 0 20px;
+    text-align: center;
+}
+@media (max-width: 400px) {
+    .mobile-menu a,
+    .page-header .page-mobile-menu a {
+        font-size: clamp(17px, 6vw, 22px);
+        letter-spacing: 1.2px;
+    }
+}
