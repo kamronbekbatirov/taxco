@@ -626,23 +626,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Make entire language selector clickable to open native picker
-    function enhanceLanguageSelectorFor(container) {
-        if (!container) return;
-        const select = container.querySelector('select');
-        if (!select) return;
-        container.addEventListener('click', (ev) => {
-            if (ev.target.tagName.toLowerCase() !== 'select') {
-                if (typeof select.showPicker === 'function') {
-                    try { select.showPicker(); } catch (_) { select.focus(); select.click(); }
-                } else {
-                    select.focus();
-                    try { select.click(); } catch (_) {}
-                }
-            }
-        });
-    }
-    document.querySelectorAll('.language-selector').forEach(enhanceLanguageSelectorFor);
+    // Выбор языка: свой список с флагами вместо системного (см. buildLanguageDropdowns)
+    buildLanguageDropdowns();
 
     // Initialize main hamburger menu
     initMainHamburger();
@@ -657,19 +642,120 @@ document.addEventListener('DOMContentLoaded', function() {
     initPageHamburger();
 });
 
-// Replace option labels in language selects with emoji flags
+// ---------- Выбор языка: флаг + код ----------
+// Эмодзи-флаги Windows показывает буквами («RU» в квадратиках), а системный список подгоняет ширину сам и при
+// крупном масштабе экрана обрезал текст. Поэтому — свой список: нарисованные флаги (SVG) и подпись, ширина по
+// содержимому. Системный <select> остаётся спрятанным: через него по-прежнему работает setLanguage.
+const SITE_LANGS = [
+    { value: 'ru', code: 'RU', name: 'Русский' },
+    { value: 'uz', code: 'UZ', name: 'Ўзбекча' },
+    { value: 'en', code: 'EN', name: 'English' }
+];
+let flagSeq = 0;
+
+function flagSvg(lang) {
+    if (lang === 'uz') {
+        return '<svg class="lang-flag" viewBox="0 0 30 20" aria-hidden="true">' +
+            '<rect width="30" height="20" fill="#1eb53a"/><rect width="30" height="13.6" fill="#ce1126"/>' +
+            '<rect y="0" width="30" height="13.2" fill="#fff"/><rect width="30" height="6.8" fill="#ce1126"/>' +
+            '<rect width="30" height="6.4" fill="#0099b5"/>' +
+            '<circle cx="5.3" cy="3.2" r="2.1" fill="#fff"/><circle cx="6" cy="3.2" r="1.9" fill="#0099b5"/>' +
+            '<circle cx="8.6" cy="1.6" r=".42" fill="#fff"/><circle cx="10" cy="1.6" r=".42" fill="#fff"/>' +
+            '<circle cx="11.4" cy="1.6" r=".42" fill="#fff"/><circle cx="10" cy="3.1" r=".42" fill="#fff"/>' +
+            '<circle cx="11.4" cy="3.1" r=".42" fill="#fff"/><circle cx="11.4" cy="4.6" r=".42" fill="#fff"/></svg>';
+    }
+    if (lang === 'en') {
+        const a = 'ujA' + (++flagSeq), b = 'ujB' + flagSeq;
+        return '<svg class="lang-flag" viewBox="0 0 60 30" preserveAspectRatio="xMidYMid slice" aria-hidden="true">' +
+            '<clipPath id="' + a + '"><path d="M0,0 v30 h60 v-30 z"/></clipPath>' +
+            '<clipPath id="' + b + '"><path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/></clipPath>' +
+            '<g clip-path="url(#' + a + ')"><path d="M0,0 v30 h60 v-30 z" fill="#012169"/>' +
+            '<path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/>' +
+            '<path d="M0,0 L60,30 M60,0 L0,30" clip-path="url(#' + b + ')" stroke="#c8102e" stroke-width="4"/>' +
+            '<path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/>' +
+            '<path d="M30,0 v30 M0,15 h60" stroke="#c8102e" stroke-width="6"/></g></svg>';
+    }
+    return '<svg class="lang-flag" viewBox="0 0 30 20" aria-hidden="true">' +
+        '<rect width="30" height="20" fill="#fff"/><rect y="6.67" width="30" height="6.67" fill="#0039a6"/>' +
+        '<rect y="13.33" width="30" height="6.67" fill="#d52b1e"/></svg>';
+}
+
+function buildLanguageDropdowns() {
+    document.querySelectorAll('.language-selector').forEach(container => {
+        const select = container.querySelector('select');
+        if (!select || container.querySelector('.lang-btn')) return;
+        container.classList.add('lang-enhanced');
+        select.classList.add('lang-native');
+        select.tabIndex = -1;
+        select.setAttribute('aria-hidden', 'true');
+
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'lang-btn';
+        btn.setAttribute('aria-haspopup', 'listbox');
+        btn.setAttribute('aria-expanded', 'false');
+        btn.setAttribute('aria-label', 'Язык сайта / Сайт тили / Language');
+
+        const menu = document.createElement('ul');
+        menu.className = 'lang-menu';
+        menu.setAttribute('role', 'listbox');
+        menu.hidden = true;
+        SITE_LANGS.forEach(l => {
+            const li = document.createElement('li');
+            li.setAttribute('role', 'option');
+            li.dataset.value = l.value;
+            li.tabIndex = -1;
+            li.innerHTML = flagSvg(l.value) + '<span class="lang-name">' + l.name + '</span><span class="lang-code">' + l.code + '</span>';
+            li.addEventListener('click', () => choose(l.value));
+            menu.appendChild(li);
+        });
+
+        function open(on) {
+            menu.hidden = !on;
+            btn.setAttribute('aria-expanded', String(on));
+            container.classList.toggle('open', on);
+            if (on) (menu.querySelector('[aria-selected="true"]') || menu.firstElementChild).focus();
+        }
+        function choose(value) {
+            open(false);
+            btn.focus();
+            if (select.value !== value) {
+                select.value = value;
+                select.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+        }
+        btn.addEventListener('click', e => { e.stopPropagation(); open(menu.hidden); });
+        menu.addEventListener('keydown', e => {
+            const items = Array.from(menu.children), i = items.indexOf(document.activeElement);
+            if (e.key === 'ArrowDown') { e.preventDefault(); items[(i + 1) % items.length].focus(); }
+            if (e.key === 'ArrowUp') { e.preventDefault(); items[(i - 1 + items.length) % items.length].focus(); }
+            if ((e.key === 'Enter' || e.key === ' ') && i >= 0) { e.preventDefault(); choose(items[i].dataset.value); }
+            if (e.key === 'Escape' || e.key === 'Tab') { open(false); if (e.key === 'Escape') btn.focus(); }
+        });
+        document.addEventListener('click', e => { if (!container.contains(e.target)) open(false); });
+
+        container.appendChild(btn);
+        container.appendChild(menu);
+    });
+    updateLanguageOptionLabels();
+}
+
 function updateLanguageOptionLabels() {
-    // Без эмодзи-флагов: Windows рисует их буквами, и поле обрезало «RU»
     const labelByValue = { ru: 'RU', uz: 'UZ', en: 'EN' };
     const selects = [document.getElementById('language-select'), document.getElementById('page-language-select')].filter(Boolean);
     selects.forEach(select => {
         Array.from(select.options).forEach(opt => {
             const v = (opt.value || '').toLowerCase();
-            if (labelByValue[v]) {
-                // Ensure only one flag is shown: set exact label text
-                opt.textContent = labelByValue[v];
-            }
+            if (labelByValue[v]) opt.textContent = labelByValue[v];
         });
+    });
+    const lang = SITE_LANGS.find(l => l.value === currentLanguage) || SITE_LANGS[0];
+    document.querySelectorAll('.language-selector .lang-btn').forEach(btn => {
+        btn.innerHTML = flagSvg(lang.value) + '<span class="lang-code">' + lang.code + '</span>' +
+            '<svg class="lang-caret" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    });
+    document.querySelectorAll('.language-selector .lang-menu li').forEach(li => {
+        li.setAttribute('aria-selected', String(li.dataset.value === currentLanguage));
     });
 }
 
