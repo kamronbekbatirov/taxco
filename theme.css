@@ -1,0 +1,303 @@
+/* TAX CONSENSUS — обновлённое оформление страниц «О нас», «Услуги», «Цены», «Контакты» и «Запись»
+   в стиле страницы «Новости и публикации» (октябрь 2026). Отдельный слой поверх styles.css.
+   Вернуть прежний вид: откатить коммит «Modern design» в git (git revert) —
+   или хотя бы убрать со страниц строку <link rel="stylesheet" href="theme.css…">. */
+
+body.internal-page {
+    --t-ink: #1f2a37;
+    --t-ink-2: #4a5462;
+    --t-muted: #8b95a1;
+    --t-line: #e9edf1;
+    --t-line-2: #f0f2f4;
+    --t-navy: #1f2a37;
+    --t-navy-2: #2f3e52;
+    --t-blue: #0088cc;
+    --t-radius: 18px;
+    --t-shadow: 0 1px 2px rgba(16, 24, 40, .04);
+    --t-shadow-hover: 0 10px 30px rgba(16, 24, 40, .07);
+    --t-check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%231f2a37' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round' d='M5.5 12.5l4 4 9-9'/%3E%3C/svg%3E");
+}
+
+/* ---------- ширина как у ленты новостей ---------- */
+body.internal-page { background: #fff; }
+body.internal-page .page { display: flow-root; }  /* отступ заголовка — внутри белой страницы, без щели под вкладками */
+body.internal-page .page-content,
+body.internal-page .secondary-nav-container { max-width: 1260px; }
+
+/* ---------- вкладки под шапкой ---------- */
+body.internal-page .secondary-nav { background: #fff; padding: 0; border-bottom: 1px solid var(--t-line); }
+body.internal-page .secondary-nav-container { gap: 34px; }
+body.internal-page .secondary-nav-item { display: block; padding: 19px 0 16px; border-bottom: 2px solid transparent;
+    color: var(--t-muted); font-size: 12px; letter-spacing: 1.2px; transition: color .15s ease, border-color .15s ease; }
+body.internal-page .secondary-nav-item:hover { color: var(--t-ink); }
+body.internal-page .secondary-nav-item.active { color: var(--t-ink); border-bottom-color: var(--t-ink); font-weight: 600; }
+
+/* ---------- заголовки и текст ---------- */
+body.internal-page .page-title { color: var(--t-ink); margin-bottom: 14px; }
+body.internal-page .about-content > h2:first-child,
+body.internal-page .service-detail > h2:first-child,
+body.internal-page .why-choose-us > h2:first-child {
+    font-family: 'Playfair Display', serif; font-weight: 400; font-size: 2.5rem; line-height: 1.2;
+    color: var(--t-ink); margin: 60px 0 14px;
+}
+body.internal-page .tab-content.active { margin-top: 0; }
+body.internal-page .about-content,
+body.internal-page .service-detail { max-width: none; margin: 0; padding: 0; }
+body.internal-page .about-content > p,
+body.internal-page .about-content > h3,
+body.internal-page .about-content > h4,
+body.internal-page .service-detail > p { max-width: 820px; }
+
+/* вводный абзац — крупнее, как лид в статье */
+body.internal-page .intro-text,
+body.internal-page .pricing-intro,
+body.internal-page .contact-intro p,
+body.internal-page .service-detail > h2 + p,
+body.internal-page .about-content > h2:first-child + p {
+    font-size: 1.12rem; line-height: 1.75; color: var(--t-ink-2); max-width: 780px; margin-bottom: 30px;
+}
+body.internal-page .about-content h3 { font-size: 1.65rem; font-weight: 400; line-height: 1.3; color: var(--t-ink); margin: 46px 0 12px; }
+body.internal-page .about-content h4 { font-size: 1.25rem; font-weight: 400; line-height: 1.35; color: var(--t-ink); margin: 34px 0 14px; }
+body.internal-page .service-detail > .page-title + h2 { font-size: 1.6rem; font-weight: 400; line-height: 1.3; color: var(--t-ink);
+    margin: 0 0 12px; }
+body.internal-page .service-detail > p:has(+ ul) { color: var(--t-ink); font-weight: 600; margin: 4px 0 12px; }
+
+/* ---------- списки: строки в одной карточке ---------- */
+body.internal-page .expertise-list,
+body.internal-page .values-list,
+body.internal-page .service-detail ul {
+    list-style: none; max-width: 820px; margin: 0 0 30px; padding: 4px 26px;
+    background: #fff; border: 1px solid var(--t-line); border-radius: var(--t-radius); box-shadow: var(--t-shadow);
+}
+body.internal-page .expertise-list li,
+body.internal-page .values-list li,
+body.internal-page .service-detail li {
+    position: relative; margin: 0; padding: 16px 0 16px 46px; border-top: 1px solid var(--t-line-2);
+    color: var(--t-ink-2); line-height: 1.6;
+}
+body.internal-page .expertise-list li:first-child,
+body.internal-page .values-list li:first-child,
+body.internal-page .service-detail li:first-child { border-top: 0; }
+/* галочка */
+body.internal-page .values-list li::before,
+body.internal-page .service-detail li::before {
+    content: ''; position: absolute; left: 0; top: 16px; width: 26px; height: 26px; border-radius: 50%;
+    background: #eef2f6 var(--t-check) center / 14px no-repeat;
+}
+/* «Наша экспертиза» — с номерами */
+body.internal-page .expertise-list { counter-reset: exp; }
+body.internal-page .expertise-list li { counter-increment: exp; }
+body.internal-page .expertise-list li::before {
+    content: counter(exp, decimal-leading-zero); position: absolute; left: 0; top: 15px; width: 30px; height: 30px;
+    border-radius: 9px; background: var(--t-navy); color: #fff; font: 600 12px/30px 'Inter', sans-serif;
+    text-align: center; letter-spacing: .4px;
+}
+
+/* ---------- «Наши ценности» — карточки: название слева, пояснение справа ---------- */
+body.internal-page .company-values { list-style: none; max-width: 820px; padding: 0; margin: 6px 0 30px; display: grid;
+    gap: 14px; }
+body.internal-page .company-values li { display: grid; grid-template-columns: minmax(0, 230px) minmax(0, 1fr);
+    gap: 6px 28px; align-items: baseline; margin: 0; padding: 24px 26px; background: #fff;
+    border: 1px solid var(--t-line); border-left: 3px solid var(--t-navy); border-radius: var(--t-radius);
+    box-shadow: var(--t-shadow); color: var(--t-ink-2); line-height: 1.65; transition: box-shadow .2s ease; }
+body.internal-page .company-values li:hover { box-shadow: var(--t-shadow-hover); }
+body.internal-page .company-values li strong { font-family: 'Playfair Display', serif; font-weight: 400;
+    font-size: 1.22rem; line-height: 1.35; color: var(--t-ink); }
+body.internal-page .conclusion-text { max-width: 820px; margin: 34px 0 0; padding: 4px 0 4px 26px;
+    border-left: 3px solid var(--t-navy); font-family: 'Playfair Display', serif; font-style: normal;
+    font-size: 1.3rem; line-height: 1.6; color: var(--t-ink); }
+
+/* ---------- «Почему выбирают нас» ---------- */
+body.internal-page .why-choose-us { background: none; padding: 0; border-radius: 0; box-shadow: none; }
+body.internal-page .advantages { counter-reset: adv; grid-template-columns: minmax(0, 1fr); gap: 14px;
+    max-width: 820px; margin-top: 26px; }
+body.internal-page .advantage-item { counter-increment: adv; display: flex; align-items: center; gap: 26px;
+    padding: 24px 28px; background: #fff; border: 1px solid var(--t-line); border-radius: var(--t-radius);
+    box-shadow: var(--t-shadow); transition: box-shadow .2s ease; }
+body.internal-page .advantage-item:hover { box-shadow: var(--t-shadow-hover); }
+body.internal-page .advantage-item::before { content: counter(adv, decimal-leading-zero); flex-shrink: 0; width: 50px;
+    font-family: 'Playfair Display', serif; font-size: 2.3rem; line-height: 1; color: #b9c3cd; }
+body.internal-page .advantage-item p { margin: 0; color: var(--t-ink); font-size: 1.05rem; line-height: 1.65; }
+
+/* ---------- «Цены» ---------- */
+body.internal-page .pricing-content { max-width: 820px; margin: 0; display: grid; gap: 18px;
+    grid-template-columns: minmax(0, 1fr); }
+body.internal-page .pricing-intro { text-align: left; margin: 0 0 12px; }
+body.internal-page .pricing-card { margin: 0; padding: 30px; background: #fff; border: 1px solid var(--t-line);
+    border-radius: var(--t-radius); box-shadow: var(--t-shadow); }
+body.internal-page .pricing-card h3 { font-weight: 400; font-size: 1.35rem; line-height: 1.35; color: var(--t-ink);
+    margin: 0 0 18px; }
+body.internal-page .pricing-card > p { margin: 0; color: var(--t-ink-2); line-height: 1.75; }
+body.internal-page .price-highlight { padding: 24px 26px; border-radius: 14px; text-align: left;
+    background: linear-gradient(135deg, var(--t-navy), var(--t-navy-2)); }
+body.internal-page .price-highlight p { margin: 0; color: #fff; font-size: 1.2rem; font-weight: 600; line-height: 1.5; }
+body.internal-page .price-highlight strong { font-size: inherit; font-weight: inherit; }
+body.internal-page .transparency-note { position: relative; padding: 22px 26px 22px 66px;
+    background: #f1f8f3; border: 1px solid #d8ebdd; border-radius: var(--t-radius); font-style: normal; text-align: left; }
+body.internal-page .transparency-note::before { content: ''; position: absolute; left: 24px; top: 22px; width: 26px; height: 26px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%232e7d32' stroke-width='1.8' stroke-linejoin='round' d='M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z'/%3E%3Cpath fill='none' stroke='%232e7d32' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' d='M8.5 12l2.5 2.5 4.5-5'/%3E%3C/svg%3E") center / contain no-repeat; }
+body.internal-page .transparency-note p { margin: 0; color: #2f5134; line-height: 1.7; }
+
+/* ---------- «Контакты» ---------- */
+body.internal-page .contact-intro { text-align: left; margin: 0; }
+body.internal-page .contact-content { max-width: none; margin: 0; gap: 22px; align-items: start;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+body.internal-page .contact-info { gap: 14px; }
+body.internal-page .contact-item { position: relative; padding: 22px 24px 22px 80px; background: #fff;
+    border: 1px solid var(--t-line); border-radius: var(--t-radius); box-shadow: var(--t-shadow); }
+body.internal-page .contact-item::before { content: ''; position: absolute; left: 22px; top: 22px; width: 40px; height: 40px;
+    border-radius: 12px; background: var(--t-navy) center / 19px no-repeat; }
+body.internal-page .contact-address::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%23fff' stroke-width='2' stroke-linejoin='round' d='M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z'/%3E%3Ccircle cx='12' cy='9.5' r='2.5' fill='none' stroke='%23fff' stroke-width='2'/%3E%3C/svg%3E"); }
+body.internal-page .contact-phone::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%23fff' stroke-width='2' stroke-linejoin='round' d='M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z'/%3E%3C/svg%3E"); }
+body.internal-page .contact-email::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='3' y='5' width='18' height='14' rx='2' fill='none' stroke='%23fff' stroke-width='2'/%3E%3Cpath fill='none' stroke='%23fff' stroke-width='2' stroke-linejoin='round' d='M3.5 6.5L12 13l8.5-6.5'/%3E%3C/svg%3E"); }
+body.internal-page .contact-item h4 { margin: 0 0 4px; font: 600 12px 'Inter', sans-serif; letter-spacing: 1.2px;
+    text-transform: uppercase; color: var(--t-muted); }
+body.internal-page .contact-item p { margin: 0; color: var(--t-ink); font-size: 1.04rem; line-height: 1.55; }
+body.internal-page .contact-item a { color: var(--t-ink); font-weight: 500; }
+body.internal-page .contact-item a:hover { color: var(--t-blue); }
+body.internal-page .map-container { padding: 22px; background: #fff; border: 1px solid var(--t-line);
+    border-radius: var(--t-radius); box-shadow: var(--t-shadow); }
+body.internal-page .map-container h4 { margin: 2px 0 16px; text-align: left; font-family: 'Playfair Display', serif;
+    font-weight: 400; font-size: 1.3rem; color: var(--t-ink); }
+body.internal-page .yandex-map { margin: 0; border-radius: 14px; box-shadow: none; border: 1px solid var(--t-line); }
+
+/* ---------- «Запись» ---------- */
+/* форма — основная колонка слева, памятка — справа, как правая колонка на других страницах */
+body.internal-page .booking-container { max-width: none; margin: 0; padding: 0; display: grid; gap: 22px 40px;
+    align-items: start; grid-template-columns: minmax(0, 1fr) 340px; }
+body.internal-page .booking-form { grid-column: 1; grid-row: 1; }
+body.internal-page .booking-info { grid-column: 2; grid-row: 1; margin: 0; padding: 24px 24px 10px; background: #fff;
+    border: 1px solid var(--t-line); border-radius: var(--t-radius); box-shadow: var(--t-shadow);
+    position: sticky; top: 24px; }
+body.internal-page .booking-info h3 { margin: 0 0 6px; font-family: 'Playfair Display', serif; font-weight: 400;
+    font-size: 1.35rem; color: var(--t-ink); }
+body.internal-page .booking-info ul { list-style: none; margin: 0; padding: 0; }
+body.internal-page .booking-info li { position: relative; margin: 0; padding: 13px 0 13px 40px;
+    border-top: 1px solid var(--t-line-2); color: var(--t-ink-2); line-height: 1.55; }
+body.internal-page .booking-info li:first-child { border-top: 0; }
+body.internal-page .booking-info li::before { content: ''; position: absolute; left: 0; top: 13px; width: 24px; height: 24px;
+    border-radius: 50%; background: #eef2f6 var(--t-check) center / 13px no-repeat; }
+body.internal-page .booking-form { padding: 32px; background: #fff; border: 1px solid var(--t-line);
+    border-radius: var(--t-radius); box-shadow: var(--t-shadow); }
+body.internal-page .form-group { margin-bottom: 20px; }
+body.internal-page .form-group label { color: var(--t-ink); font-weight: 600; font-size: 14px; margin-bottom: 8px; }
+body.internal-page .form-group input,
+body.internal-page .form-group select,
+body.internal-page .form-group textarea { padding: 12px 14px; border: 1px solid #d5dbe2; border-radius: 12px;
+    background: #fbfcfd; color: var(--t-ink); font-size: 16px;
+    transition: border-color .15s ease, box-shadow .15s ease, background .15s ease; }
+body.internal-page .form-group input:focus,
+body.internal-page .form-group select:focus,
+body.internal-page .form-group textarea:focus { border-color: var(--t-navy); background: #fff;
+    box-shadow: 0 0 0 4px rgba(31, 42, 55, .08); }
+body.internal-page .time-slots { gap: 8px; grid-template-columns: repeat(auto-fill, minmax(124px, 1fr)); }
+body.internal-page .time-slots > .loading,
+body.internal-page .time-slots > .error { grid-column: 1 / -1; padding: 12px 0; text-align: left; color: var(--t-muted); }
+body.internal-page .time-slot { padding: 10px 12px; border: 1px solid #d5dbe2; border-radius: 999px; color: var(--t-ink);
+    font-size: 14px; font-weight: 500; transition: all .15s ease; }
+body.internal-page .time-slot:hover { border-color: var(--t-navy); background: #f6f8fa; }
+body.internal-page .time-slot.selected { background: var(--t-navy); border-color: var(--t-navy); color: #fff; }
+body.internal-page .time-slot.unavailable { background: #f3f5f7; border-color: #e8ebef; color: #aab3bc; opacity: 1;
+    text-decoration: line-through; }
+body.internal-page .submit-btn { padding: 16px; border-radius: 12px; background: var(--t-navy); font-size: 16px;
+    letter-spacing: .2px; box-shadow: 0 10px 24px rgba(31, 42, 55, .18); transition: background .15s ease, transform .15s ease; }
+body.internal-page .submit-btn:hover { background: var(--t-navy-2); transform: translateY(-1px); }
+body.internal-page .submit-btn:disabled { background: #cbd2d9; box-shadow: none; transform: none; }
+body.internal-page .success-message,
+body.internal-page .error-message { border-radius: 12px; padding: 14px 16px; line-height: 1.6; }
+
+/* ---------- правая колонка, как на странице новостей: «Связаться с нами» и запись ---------- */
+body.internal-page .page-layout { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 0 40px;
+    align-items: start; }
+body.internal-page .page-main { min-width: 0; }
+body.internal-page .page-side { display: grid; gap: 20px; position: sticky; top: 24px; margin-top: 66px; }
+body.internal-page .side-card { padding: 24px 24px 8px; background: #fff; border: 1px solid var(--t-line);
+    border-radius: var(--t-radius); box-shadow: var(--t-shadow); }
+body.internal-page .side-card h3 { margin: 0 0 6px; font-family: 'Playfair Display', serif; font-weight: 400;
+    font-size: 1.3rem; color: var(--t-ink); }
+body.internal-page .side-row { display: block; position: relative; padding: 14px 0 14px 50px;
+    border-top: 1px solid var(--t-line-2); color: var(--t-ink); text-decoration: none; }
+body.internal-page .side-card h3 + .side-row { border-top: 0; }
+body.internal-page .side-row::before { content: ''; position: absolute; left: 0; top: 50%; width: 36px; height: 36px;
+    margin-top: -18px; border-radius: 10px; background: #eef2f6 center / 17px no-repeat; }
+body.internal-page .side-row small { display: block; margin-bottom: 2px; font: 600 11px 'Inter', sans-serif;
+    letter-spacing: 1px; text-transform: uppercase; color: var(--t-muted); }
+body.internal-page .side-row span { display: block; font-size: 15px; font-weight: 500; line-height: 1.45; }
+body.internal-page a.side-row:hover span { color: var(--t-blue); }
+
+body.internal-page .side-phone::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%231f2a37' stroke-width='2' stroke-linejoin='round' d='M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z'/%3E%3C/svg%3E"); }
+body.internal-page .side-email::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='3' y='5' width='18' height='14' rx='2' fill='none' stroke='%231f2a37' stroke-width='2'/%3E%3Cpath fill='none' stroke='%231f2a37' stroke-width='2' stroke-linejoin='round' d='M3.5 6.5L12 13l8.5-6.5'/%3E%3C/svg%3E"); }
+body.internal-page .side-address::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%231f2a37' stroke-width='2' stroke-linejoin='round' d='M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z'/%3E%3Ccircle cx='12' cy='9.5' r='2.5' fill='none' stroke='%231f2a37' stroke-width='2'/%3E%3C/svg%3E"); }
+body.internal-page .side-hours::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='8.5' fill='none' stroke='%231f2a37' stroke-width='2'/%3E%3Cpath fill='none' stroke='%231f2a37' stroke-width='2' stroke-linecap='round' d='M12 7.5V12l3 2'/%3E%3C/svg%3E"); }
+
+body.internal-page .page-cta { padding: 22px 24px; border-radius: var(--t-radius);
+    background: linear-gradient(135deg, var(--t-navy), var(--t-navy-2)); }
+body.internal-page .page-cta h3 { margin: 0 0 8px; font-family: 'Playfair Display', serif; font-weight: 400;
+    font-size: 1.25rem; color: #fff; }
+body.internal-page .page-cta p { margin: 0 0 16px; color: rgba(255, 255, 255, .78); font-size: 14.5px; line-height: 1.6; }
+body.internal-page .page-cta a { display: inline-block; padding: 12px 22px; border-radius: 12px; background: #fff;
+    color: var(--t-ink); font-weight: 600; text-decoration: none; transition: opacity .15s ease; }
+body.internal-page .page-cta a:hover { opacity: .9; }
+
+/* ---------- планшет и телефон ---------- */
+@media (max-width: 1000px) {
+    /* правая колонка уходит под текст: две карточки рядом, на телефоне — друг под другом */
+    body.internal-page .page-layout { grid-template-columns: minmax(0, 1fr); }
+    body.internal-page .page-side { position: static; margin-top: 40px; grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: start; }
+    /* «Запись»: памятка — над формой */
+    body.internal-page .booking-container { grid-template-columns: minmax(0, 1fr); }
+    body.internal-page .booking-form,
+    body.internal-page .booking-info { grid-column: auto; grid-row: auto; }
+    body.internal-page .booking-info { position: static; }
+}
+@media (max-width: 640px) {
+    body.internal-page .page-side { grid-template-columns: minmax(0, 1fr); margin-top: 32px; }
+    body.internal-page .company-values li { grid-template-columns: minmax(0, 1fr); padding: 20px; }
+    body.internal-page .advantage-item { gap: 18px; padding: 20px; }
+    body.internal-page .advantage-item::before { width: 40px; font-size: 1.9rem; }
+}
+@media (max-width: 900px) {
+    /* вкладки — «таблетками» в несколько строк, всё видно сразу */
+    body.internal-page .secondary-nav { padding: 14px 0; }
+    body.internal-page .secondary-nav-container { flex-wrap: wrap; gap: 8px; padding: 0 20px; }
+    body.internal-page .secondary-nav-item { padding: 8px 14px; border: 1px solid #d9dfe5; border-radius: 999px;
+        font-size: 11px; letter-spacing: .6px; line-height: 1.35; }
+    body.internal-page .secondary-nav-item.active { background: var(--t-ink); border-color: var(--t-ink); color: #fff; }
+
+    body.internal-page .contact-content { grid-template-columns: minmax(0, 1fr); }
+    body.internal-page .booking-form { padding: 24px 20px; }
+    body.internal-page .pricing-card { padding: 24px 20px; }
+    body.internal-page .price-highlight { padding: 20px; }
+    body.internal-page .price-highlight p { font-size: 1.08rem; }
+}
+@media (max-width: 768px) {
+    body.internal-page .about-content > h2:first-child,
+    body.internal-page .service-detail > h2:first-child,
+    body.internal-page .why-choose-us > h2:first-child { font-size: 2rem; margin: 40px 0 12px; }
+    body.internal-page .service-detail > .page-title + h2 { font-size: 1.35rem; }
+    body.internal-page .expertise-list,
+    body.internal-page .values-list,
+    body.internal-page .service-detail ul { padding: 2px 18px; }
+    body.internal-page .contact-item { padding: 18px 18px 18px 72px; }
+    body.internal-page .contact-item::before { left: 18px; top: 18px; }
+    body.internal-page .map-container { padding: 16px; }
+    body.internal-page .transparency-note { padding: 18px 18px 18px 58px; }
+    body.internal-page .transparency-note::before { left: 18px; top: 19px; }
+}
+@media (max-width: 480px) {
+    body.internal-page .secondary-nav-container { padding: 0 15px; }
+    body.internal-page .about-content > h2:first-child,
+    body.internal-page .service-detail > h2:first-child,
+    body.internal-page .why-choose-us > h2:first-child { font-size: 1.5rem; margin: 30px 0 10px; }
+    body.internal-page .service-detail > .page-title + h2 { font-size: 1.22rem; }
+    body.internal-page .intro-text,
+    body.internal-page .pricing-intro,
+    body.internal-page .contact-intro p,
+    body.internal-page .service-detail > h2 + p,
+    body.internal-page .about-content > h2:first-child + p { font-size: 1.04rem; }
+    body.internal-page .expertise-list li,
+    body.internal-page .values-list li,
+    body.internal-page .service-detail li { padding-left: 40px; }
+    body.internal-page .conclusion-text { font-size: 1.15rem; padding-left: 18px; }
+}

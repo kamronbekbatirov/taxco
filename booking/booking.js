@@ -56,7 +56,7 @@
         if (!slots || slots.length === 0) {
             const translations = {
                 'ru': 'На эту дату нет доступных слотов',
-                'uz': 'Bu sanada bo\'sh vaqt yo\'q',
+                'uz': 'Бу санада бўш вақт йўқ',
                 'en': 'No available slots for this date'
             };
             timeSlotsContainer.innerHTML = `<div class="error">${translations[currentLanguage]}</div>`;
@@ -131,7 +131,7 @@
         const originalText = submitBtn.textContent;
         const loadingTexts = {
             'ru': 'Отправка...',
-            'uz': 'Yuborilmoqda...',
+            'uz': 'Юборилмоқда...',
             'en': 'Submitting...'
         };
         submitBtn.textContent = loadingTexts[currentLanguage];
@@ -154,7 +154,7 @@
             // Показываем сообщение об успехе
             const successTexts = {
                 'ru': `Запись успешно создана! Номер вашей записи: <strong>${data.booking_id}</strong>. Консультант свяжется с вами для подтверждения.`,
-                'uz': `Yozuv muvaffaqiyatli yaratildi! Yozuv raqamingiz: <strong>${data.booking_id}</strong>. Maslahatchi tasdiqlash uchun siz bilan bog'lanadi.`,
+                'uz': `Ёзилиш муваффақиятли қабул қилинди! Ёзилиш рақамингиз: <strong>${data.booking_id}</strong>. Маслаҳатчи тасдиқлаш учун сиз билан боғланади.`,
                 'en': `Booking created successfully! Your booking ID: <strong>${data.booking_id}</strong>. A consultant will contact you to confirm.`
             };
             showSuccess(successTexts[currentLanguage]);
@@ -171,7 +171,7 @@
             console.error('Booking error:', error);
             const errorTexts = {
                 'ru': error.message || 'Произошла ошибка при создании записи. Пожалуйста, попробуйте позже.',
-                'uz': error.message || 'Yozuv yaratishda xatolik yuz berdi. Keyinroq urinib ko\'ring.',
+                'uz': error.message || 'Ёзилишда хатолик юз берди. Кейинроқ уриниб кўринг.',
                 'en': error.message || 'An error occurred while creating the booking. Please try again later.'
             };
             showError(errorTexts[currentLanguage]);

@@ -53,11 +53,16 @@ const translations = {
         // Pricing section
         'pricing-title': 'Цены на услуги',
         'pricing-intro': 'Стоимость услуг зависит от сложности запроса, объема работ и требуемого уровня экспертизы.',
-        'base-rate': '🔹 Базовая ставка для понимания ценового уровня:',
+        'base-rate': 'Базовая ставка для понимания ценового уровня',
         'hourly-rate': 'Стандартная плата за 1 час налогового консультирования составляет 3 500 000 сум + НДС 12%.',
-        'individual-calc': '🔹 Индивидуальный расчёт стоимости:',
+        'individual-calc': 'Индивидуальный расчёт стоимости',
         'individual-calc-desc': 'Для определения точного объема работ и времени, необходимого для выполнения запроса, мы проводим предварительное интервью с потенциальным клиентом. По итогам консультации мы формируем индивидуальное коммерческое предложение (КП) с описанием условий, стоимости и сроков предоставления услуг.',
         'transparency': 'Мы ценим прозрачность и уверены, что каждый клиент должен заранее понимать, за что он платит и какие результаты получит.',
+        'cta-title': 'Нужна консультация?',
+        'cta-text': 'Запишитесь онлайн на удобное время — подтверждение придёт на email.',
+        'cta-btn': 'Записаться',
+        'side-hours-label': 'Часы работы',
+        'side-hours': 'Пн–Пт, 10:00–18:00',
 
         // News section
         'news-title': 'Новости и публикации',
@@ -68,11 +73,11 @@ const translations = {
         // Contact section
         'contact-title': 'Связаться с нами',
         'contact-intro': 'Чтобы связаться с нами используйте контактную информацию ниже:',
-        'contact-address': '📍 Адрес:',
+        'contact-address': 'Адрес',
         'address': 'Квартира 22, дом 44, Киёт-5, город Ташкент, Республика Узбекистан, 100017',
-        'contact-phone': '📞 Телефон:',
-        'contact-email': '📧 Email:',
-        'map-title': '🗺️ Наше местоположение',
+        'contact-phone': 'Телефон',
+        'contact-email': 'Email',
+        'map-title': 'Наше местоположение',
         'map-info': 'Киёт-5, дом 44, кв. 22, 100017, Ташкент',
         'footer-text': 'Профессиональное налоговое консультирование в Узбекистане',
         
@@ -169,11 +174,16 @@ const translations = {
         // Pricing section
         'pricing-title': 'Нархлар',
         'pricing-intro': 'Хизматлар қиймати сўровнинг мураккаблиги ва ҳажмига боғлиқ бўлади.',
-        'base-rate': 'Асосий тариф қўйидагича белгиланган:',
+        'base-rate': 'Асосий тариф қўйидагича белгиланган',
         'hourly-rate': '1 соат солиқ маслаҳати — 3 500 000 сўм + 12% ҚҚС',
         'individual-calc': 'Шахсий таклиф',
         'individual-calc-desc': 'Тўлиқ нарх ва соат ҳажмни аниқлаш учун мижоз билан аввалдан суҳбат ўтказилади ва шундан сўнг шахсий тижорат таклифи тақдим этилади.',
         'transparency': 'Биз очиқ ва аниқ ҳисоб-китобларни қадрлаймиз ва мижознинг олдиндан ҳаммасини тушуниб олишига интилган ҳолда иш олиб борамиз.',
+        'cta-title': 'Маслаҳат керакми?',
+        'cta-text': 'Қулай вақтга онлайн ёзилинг — тасдиқ email орқали юборилади.',
+        'cta-btn': 'Ёзилиш',
+        'side-hours-label': 'Иш вақти',
+        'side-hours': 'Душанба–жума, 10:00–18:00',
 
         // News section
         'news-title': 'Янгиликлар ва мақолалар',
@@ -184,11 +194,11 @@ const translations = {
         // Contact section
         'contact-title': 'Алоқа',
         'contact-intro': 'Биз билан боғланиш учун:',
-        'contact-address': '📍 Манзил:',
+        'contact-address': 'Манзил',
         'address': '22-хонадон, 44-уй, Киёт-5, Тошкент шаҳри, Ўзбекистон Республикаси, 100017',
-        'contact-phone': '📞 Телефон:',
-        'contact-email': '📧 Email:',
-        'map-title': '🗺️ Бизнинг жойлашувимиз',
+        'contact-phone': 'Телефон',
+        'contact-email': 'Email',
+        'map-title': 'Бизнинг жойлашувимиз',
         'map-info': 'Киёт-5, 44-уй, 22-хонадон, 100017, Тошкент',
         'footer-text': 'Ўзбекистонда профессионал солиқ маслаҳатчилиги',
         
@@ -283,11 +293,16 @@ const translations = {
         // Pricing section
         'pricing-title': 'Service Pricing',
         'pricing-intro': 'Service cost depends on request complexity, scope of work and required level of expertise.',
-        'base-rate': '🔹 Base rate for price level understanding:',
+        'base-rate': 'Base rate for price level understanding',
         'hourly-rate': 'Standard fee for 1 hour of tax consulting is 3,500,000 sum + 12% VAT.',
-        'individual-calc': '🔹 Individual cost calculation:',
+        'individual-calc': 'Individual cost calculation',
         'individual-calc-desc': 'To determine the exact scope of work and time required to fulfill the request, we conduct a preliminary interview with the potential client. Based on consultation results, we form an individual commercial proposal (CP) with description of conditions, cost and service delivery terms.',
         'transparency': 'We value transparency and believe that each client should understand in advance what they pay for and what results they will receive.',
+        'cta-title': 'Need a consultation?',
+        'cta-text': 'Book a convenient time online — we will confirm by email.',
+        'cta-btn': 'Book now',
+        'side-hours-label': 'Office hours',
+        'side-hours': 'Mon–Fri, 10:00–18:00',
 
         // News section
         'news-title': 'News and Publications',
@@ -298,11 +313,11 @@ const translations = {
         // Contact section
         'contact-title': 'Contact Us',
         'contact-intro': 'To contact us, use the contact information below:',
-        'contact-address': '📍 Address:',
+        'contact-address': 'Address',
         'address': 'Apt. 22, House 44, Kiyot-5, Tashkent, Republic of Uzbekistan, 100017',
-        'contact-phone': '📞 Phone:',
-        'contact-email': '📧 Email:',
-        'map-title': '🗺️ Our Location',
+        'contact-phone': 'Phone',
+        'contact-email': 'Email',
+        'map-title': 'Our Location',
         'map-info': 'Kiyot-5, House 44, Apt. 22, 100017, Tashkent',
         'footer-text': 'Professional Tax Consulting in Uzbekistan',
         
@@ -417,12 +432,12 @@ function getCurrentPageTitle() {
             'booking': 'Запись на консультацию - TAX CONSENSUS'
         },
         uz: {
-            'index': 'TAX CONSENSUS - Soliq konsultatsiyasi',
-            'about': 'Biz haqimizda - TAX CONSENSUS',
-            'services': 'Xizmatlar - TAX CONSENSUS',
-            'pricing': 'Narxlar - TAX CONSENSUS',
-            'news': 'Yangiliklar - TAX CONSENSUS',
-            'contact': 'Kontaktlar - TAX CONSENSUS',
+            'index': 'TAX CONSENSUS - Солиқ маслаҳатчилиги',
+            'about': 'Биз ҳақимизда - TAX CONSENSUS',
+            'services': 'Хизматларимиз - TAX CONSENSUS',
+            'pricing': 'Нархлар - TAX CONSENSUS',
+            'news': 'Янгиликлар - TAX CONSENSUS',
+            'contact': 'Алоқа - TAX CONSENSUS',
             'booking': 'Консультацияга ёзилиш - TAX CONSENSUS'
         },
         en: {
