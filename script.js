@@ -648,7 +648,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // содержимому. Системный <select> остаётся спрятанным: через него по-прежнему работает setLanguage.
 const SITE_LANGS = [
     { value: 'ru', code: 'RU', name: 'Русский' },
-    { value: 'uz', code: 'UZ', name: 'Ўзбекча' },
+    { value: 'uz', code: 'УЗ', name: 'Ўзбекча' },
     { value: 'en', code: 'EN', name: 'English' }
 ];
 let flagSeq = 0;
@@ -741,7 +741,7 @@ function buildLanguageDropdowns() {
 }
 
 function updateLanguageOptionLabels() {
-    const labelByValue = { ru: 'RU', uz: 'UZ', en: 'EN' };
+    const labelByValue = { ru: 'RU', uz: 'УЗ', en: 'EN' };
     const selects = [document.getElementById('language-select'), document.getElementById('page-language-select')].filter(Boolean);
     selects.forEach(select => {
         Array.from(select.options).forEach(opt => {

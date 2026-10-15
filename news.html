@@ -23,7 +23,7 @@
     <link rel="apple-touch-icon" href="/favicon/apple-touch-icon.png">
     <link rel="manifest" href="/favicon/site.webmanifest">
     <link rel="stylesheet" href="styles.css?v=6">
-    <link rel="stylesheet" href="news/news.css?v=2">
+    <link rel="stylesheet" href="news/news.css?v=3">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <!-- Umami analytics (stats.kama.uz) -->
     <script defer src="https://stats.kama.uz/script.js" data-website-id="93594f2a-e118-4450-8d47-b72caae03f6f"></script>
@@ -118,18 +118,6 @@
             </div>
 
             <div class="news-layout">
-                <aside class="news-channel" aria-label="Telegram-канал">
-                    <img class="ch-ava" id="ch-ava" alt="" width="88" height="88" hidden>
-                    <h2 class="ch-title" id="ch-title">Iroda Abbasovna</h2>
-                    <a class="ch-user" href="https://t.me/iroda_abbasovna" target="_blank" rel="noopener">@iroda_abbasovna</a>
-                    <div class="ch-subs" id="ch-subs"></div>
-                    <div class="ch-desc" id="ch-desc" hidden></div>
-                    <a class="ch-btn" href="https://t.me/iroda_abbasovna" target="_blank" rel="noopener">
-                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-                        <span data-news-t="subscribe">Подписаться на канал</span>
-                    </a>
-                </aside>
-
                 <section class="news-main" aria-label="Лента">
                     <div class="news-filters" id="news-filters" hidden></div>
                     <div id="tg-feed" aria-live="polite">
@@ -141,22 +129,34 @@
                     <noscript><div class="news-empty">Читайте новости в Telegram-канале <a href="https://t.me/iroda_abbasovna">@iroda_abbasovna</a></div></noscript>
                 </section>
 
-                <div class="news-extra">
-                    <div class="news-box" id="news-articles" hidden>
-                        <h3 data-news-t="articles">Статьи на сайте</h3>
-                        <div class="news-art-list"></div>
+                <!-- Справа одним блоком (едет при прокрутке): канал, под ним — запись на консультацию -->
+                <aside class="news-side">
+                    <div class="news-channel" aria-label="Telegram-канал">
+                        <img class="ch-ava" id="ch-ava" alt="" width="88" height="88" hidden>
+                        <h2 class="ch-title" id="ch-title">Iroda Abbasovna</h2>
+                        <a class="ch-user" href="https://t.me/iroda_abbasovna" target="_blank" rel="noopener">@iroda_abbasovna</a>
+                        <div class="ch-subs" id="ch-subs"></div>
+                        <div class="ch-desc" id="ch-desc" hidden></div>
+                        <a class="ch-btn" href="https://t.me/iroda_abbasovna" target="_blank" rel="noopener">
+                            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                            <span data-news-t="subscribe">Подписаться на канал</span>
+                        </a>
                     </div>
                     <div class="news-box news-cta">
                         <h3 data-news-t="ctaTitle">Нужна консультация?</h3>
                         <div data-news-t="ctaText">Разберём ваш вопрос по налогам и подготовим письменное заключение.</div>
                         <a href="booking.html" data-news-t="ctaBtn">Записаться</a>
                     </div>
-                </div>
+                    <div class="news-box" id="news-articles" hidden>
+                        <h3 data-news-t="articles">Статьи на сайте</h3>
+                        <div class="news-art-list"></div>
+                    </div>
+                </aside>
             </div>
         </div>
     </main>
 
-    <script src="script.js?v=17"></script>
-    <script src="news/news.js?v=2"></script>
+    <script src="script.js?v=18"></script>
+    <script src="news/news.js?v=3"></script>
 </body>
 </html>
