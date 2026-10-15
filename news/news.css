@@ -1,15 +1,190 @@
+/* Новости и публикации: лента Telegram-канала (news.html) и статьи (news/<slug>.html).
+   Файл собирает панель TaxCo AI (app/site_assets/news.css → /news/news.css) — правьте исходник там. */
 
-.news-feed { max-width: 900px; margin: 40px auto 0; display: grid; gap: 24px; text-align: left; }
-.news-card { display: block; background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 28px 32px;
-  text-decoration: none; color: #333; transition: box-shadow .2s ease, transform .2s ease; }
-.news-card:hover { box-shadow: 0 6px 18px rgba(0,0,0,.08); transform: translateY(-2px); }
-.news-card h3 { font-family: 'Playfair Display', serif; font-weight: 400; font-size: 1.45rem; margin: 6px 0 10px; }
-.news-card p { color: #555; margin: 0; }
-.news-date { display: block; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; color: #888; }
-.news-more { display: inline-block; margin-top: 14px; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; color: #0088cc; }
+.news-page { --ink: #1f2a37; --ink-2: #4a5462; --muted: #8b95a1; --line: #e9edf1; --tg: #0088cc; --tg-soft: #f2f8fc; }
+
+/* ---------- страница ленты ---------- */
+.news-head { max-width: 1180px; margin: 0 auto; }
+.news-head .page-title { margin-bottom: 10px; }
+.news-page .news-lead { color: var(--ink-2); font-size: 1.05rem; line-height: 1.6; margin: 0 0 36px; max-width: 680px; }
+
+.news-layout { max-width: 1180px; margin: 0 auto; display: grid; gap: 28px 40px; align-items: start;
+  grid-template-columns: minmax(0, 1fr) 340px; grid-template-areas: "main channel" "main extra"; }
+.news-main { grid-area: main; min-width: 0; }
+.news-channel { grid-area: channel; }
+.news-extra { grid-area: extra; display: grid; gap: 20px; position: sticky; top: 24px; }
+
+/* фильтр по языку */
+.news-filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 20px; }
+.news-chip { border: 1px solid #d9dfe5; background: #fff; color: var(--ink-2); border-radius: 999px; padding: 8px 18px;
+  font: 500 14px 'Inter', sans-serif; cursor: pointer; transition: all .15s ease; }
+.news-chip:hover { border-color: var(--ink); color: var(--ink); }
+.news-chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
+
+/* карточка поста */
+.tg-card { background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 22px 24px 16px;
+  margin-bottom: 20px; box-shadow: 0 1px 2px rgba(16, 24, 40, .04); transition: box-shadow .2s ease; }
+.tg-card:hover { box-shadow: 0 10px 30px rgba(16, 24, 40, .07); }
+.tg-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.tg-ava { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; flex-shrink: 0; background: #e6edf3; }
+.tg-who { min-width: 0; line-height: 1.3; }
+.tg-who b { display: block; font-weight: 600; font-size: 15px; color: var(--ink); }
+.tg-who time { font-size: 13px; color: var(--muted); }
+.tg-fwd { font-size: 13px; color: var(--muted); margin: -4px 0 10px; }
+.tg-fwd a, .tg-fwd span { color: var(--tg); text-decoration: none; font-weight: 500; }
+
+.tg-text { font-size: 15.5px; line-height: 1.7; color: #2b2f36; overflow-wrap: anywhere; }
+.tg-text a { color: var(--tg); text-decoration: none; }
+.tg-text a:hover { text-decoration: underline; }
+.tg-text b, .tg-text strong { font-weight: 600; color: #1d232b; }
+.tg-text blockquote { margin: 10px 0; padding: 8px 14px; border-left: 3px solid var(--tg); background: var(--tg-soft);
+  border-radius: 0 10px 10px 0; }
+.tg-text code { background: #f1f3f6; padding: 1px 5px; border-radius: 4px; font-size: .92em; }
+.tg-text pre { background: #f1f3f6; padding: 10px 12px; border-radius: 8px; white-space: pre-wrap; margin: 8px 0; }
+.tg-spoiler { background: #d5dbe1; color: transparent; border-radius: 4px; cursor: pointer; transition: all .2s; }
+.tg-spoiler.open { background: none; color: inherit; }
+.tg-text.is-clamped { max-height: 15.3em; overflow: hidden;
+  -webkit-mask-image: linear-gradient(180deg, #000 72%, transparent); mask-image: linear-gradient(180deg, #000 72%, transparent); }
+.tg-expand { background: none; border: 0; padding: 8px 0 0; color: var(--tg); font: 500 14.5px 'Inter', sans-serif; cursor: pointer; }
+.tg-expand:hover { text-decoration: underline; }
+
+/* фото, альбомы, видео */
+.tg-media { margin-top: 14px; border-radius: 14px; overflow: hidden; display: grid; gap: 3px; background: #f4f6f8; }
+.tg-card > .tg-media:first-of-type { margin-top: 0; margin-bottom: 14px; }
+.tg-media.n2, .tg-media.n4 { grid-template-columns: 1fr 1fr; }
+.tg-media.n3 { grid-template-columns: 2fr 1fr; }
+.tg-media.n3 > :first-child { grid-row: span 2; }
+.tg-media > a { position: relative; display: block; background: #eef1f4; overflow: hidden; }
+.tg-media img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.tg-media.n1 img { height: auto; max-height: 560px; }
+.tg-media:not(.n1) > a { aspect-ratio: 1 / 1; }
+.tg-media.n3 > a:first-child { aspect-ratio: auto; }
+.tg-media .tg-more-photos { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  background: rgba(0, 0, 0, .45); color: #fff; font: 600 22px 'Inter', sans-serif; }
+.tg-play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+.tg-play::before { content: ''; width: 66px; height: 66px; border-radius: 50%; background: rgba(0, 0, 0, .55)
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23fff' d='M8 5.14v13.72a1 1 0 0 0 1.52.85l11.1-6.86a1 1 0 0 0 0-1.7L9.52 4.29A1 1 0 0 0 8 5.14z'/%3E%3C/svg%3E")
+  center / 28px no-repeat; transition: transform .2s ease; }
+.tg-media > a:hover .tg-play::before { transform: scale(1.08); }
+.tg-dur { position: absolute; left: 10px; top: 10px; background: rgba(0, 0, 0, .55); color: #fff; font-size: 12px;
+  padding: 2px 9px; border-radius: 10px; }
+
+/* превью ссылки */
+.tg-preview { display: flex; gap: 12px; margin-top: 14px; padding: 10px 12px 10px 14px; border-left: 3px solid var(--tg);
+  background: var(--tg-soft); border-radius: 0 12px 12px 0; text-decoration: none; color: inherit; }
+.tg-preview:hover { background: #e9f3fa; }
+.tg-preview .pv-body { min-width: 0; flex: 1; }
+.tg-preview .pv-site { color: var(--tg); font-weight: 600; font-size: 13.5px; }
+.tg-preview .pv-title { font-weight: 600; font-size: 14.5px; color: var(--ink); margin-top: 2px; }
+.tg-preview .pv-desc { font-size: 13.5px; color: var(--ink-2); line-height: 1.5; margin-top: 2px; display: -webkit-box;
+  -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.tg-preview .pv-thumb { width: 74px; height: 74px; border-radius: 10px; object-fit: cover; flex-shrink: 0; }
+.tg-preview .pv-image { display: block; width: 100%; max-height: 340px; object-fit: cover; border-radius: 10px; margin-top: 8px; }
+
+/* опрос */
+.tg-poll-q { font-weight: 600; color: var(--ink); line-height: 1.5; }
+.tg-poll-type { font-size: 13px; color: var(--muted); margin: 4px 0 10px; }
+.tg-opt { position: relative; display: flex; gap: 12px; margin: 6px 0; padding: 10px 12px; border-radius: 10px;
+  background: #f5f7f9; overflow: hidden; font-size: 14.5px; line-height: 1.45; }
+.tg-opt-bar { position: absolute; left: 0; top: 0; bottom: 0; background: rgba(0, 136, 204, .12); }
+.tg-opt b { position: relative; min-width: 40px; color: var(--tg); font-weight: 600; }
+.tg-opt span { position: relative; }
+
+/* документ */
+.tg-doc { display: flex; align-items: center; gap: 12px; margin-top: 14px; padding: 12px 14px; border: 1px solid var(--line);
+  border-radius: 12px; text-decoration: none; color: var(--ink); }
+.tg-doc i { width: 40px; height: 40px; border-radius: 50%; background: var(--tg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23fff' d='M6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm7 1.5V9h5.5L13 3.5z'/%3E%3C/svg%3E") center / 20px no-repeat; flex-shrink: 0; }
+.tg-doc small { display: block; color: var(--muted); }
+
+/* ссылка на статью с сайта */
+.tg-article { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 16px;
+  padding: 12px 16px; border: 1px solid #dfe6ec; border-radius: 12px; text-decoration: none; color: var(--ink);
+  transition: border-color .15s ease; }
+.tg-article:hover { border-color: var(--tg); }
+.tg-article small { display: block; color: var(--muted); font-size: 12px; letter-spacing: .5px; text-transform: uppercase; }
+.tg-article span { font-weight: 500; line-height: 1.4; }
+.tg-article::after { content: '→'; color: var(--tg); font-size: 18px; }
+
+/* низ карточки */
+.tg-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px 16px; flex-wrap: wrap;
+  margin-top: 16px; padding-top: 12px; border-top: 1px solid #f0f2f4; font-size: 13.5px; color: var(--muted); }
+.tg-stats { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.tg-react { background: #f3f6f9; border-radius: 999px; padding: 3px 10px; color: #3a4450; font-size: 13px; }
+.tg-views { display: inline-flex; align-items: center; gap: 5px; margin-left: 4px; }
+.tg-views::before { content: ''; width: 16px; height: 16px; opacity: .75; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%238b95a1' d='M12 5C6.5 5 2.7 9.2 1.5 12c1.2 2.8 5 7 10.5 7s9.3-4.2 10.5-7C21.3 9.2 17.5 5 12 5zm0 11.5a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9zm0-7a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5z'/%3E%3C/svg%3E") center / contain no-repeat; }
+.tg-open { color: var(--tg); font-weight: 500; text-decoration: none; white-space: nowrap; }
+.tg-open:hover { text-decoration: underline; }
+
+.news-more-btn { display: block; margin: 8px auto 0; padding: 13px 30px; border-radius: 999px; border: 1px solid #d5dbe1;
+  background: #fff; color: var(--ink); font: 500 15px 'Inter', sans-serif; cursor: pointer; transition: all .15s ease; }
+.news-more-btn:hover { border-color: var(--tg); color: var(--tg); }
+.news-empty { background: #fff; border: 1px dashed #d5dbe1; border-radius: 18px; padding: 36px 24px; text-align: center; color: var(--ink-2); }
+.news-empty a { color: var(--tg); }
+
+/* загрузка */
+.tg-skel { height: 230px; border-radius: 18px; margin-bottom: 20px; background: linear-gradient(90deg, #f1f3f6 25%, #e8ecf0 37%, #f1f3f6 63%);
+  background-size: 400% 100%; animation: tg-shimmer 1.4s ease infinite; }
+.tg-skel.short { height: 150px; }
+@keyframes tg-shimmer { 0% { background-position: 100% 50%; } 100% { background-position: 0 50%; } }
+
+/* карточка канала */
+.news-channel { background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 26px 24px 24px; text-align: center; }
+.ch-ava { width: 88px; height: 88px; border-radius: 50%; object-fit: cover; display: block; margin: 0 auto 14px;
+  background: #e6edf3; box-shadow: 0 0 0 4px #fff, 0 0 0 5px #e1e8ee; }
+.ch-ava[hidden] { display: none; }
+.ch-title { font-family: 'Playfair Display', serif; font-size: 1.45rem; font-weight: 400; color: var(--ink); margin: 0; }
+.ch-user { color: var(--tg); font-size: 14.5px; text-decoration: none; }
+.ch-subs { color: #6b7684; font-size: 13.5px; margin-top: 4px; }
+.ch-desc { font-size: 14px; color: var(--ink-2); line-height: 1.6; margin: 14px 0 18px; overflow-wrap: anywhere; }
+.ch-desc a { color: var(--tg); text-decoration: none; }
+.ch-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px 16px;
+  border-radius: 14px; background: linear-gradient(135deg, #0088cc, #229ed9); color: #fff !important; font-weight: 600;
+  font-size: 15px; text-decoration: none; box-shadow: 0 8px 22px rgba(0, 136, 204, .25); transition: transform .15s ease, box-shadow .15s ease; }
+.ch-btn:hover { transform: translateY(-1px); box-shadow: 0 12px 28px rgba(0, 136, 204, .33); }
+.ch-btn svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+/* статьи и запись */
+.news-box { background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 22px 24px; }
+.news-box h3 { font-family: 'Playfair Display', serif; font-weight: 400; font-size: 1.25rem; color: var(--ink); margin: 0 0 8px; }
+.news-art { display: block; padding: 12px 0; border-top: 1px solid #f0f2f4; text-decoration: none; color: var(--ink); }
+.news-art:first-of-type { border-top: 0; }
+.news-art time { display: block; font-size: 12px; color: var(--muted); letter-spacing: .6px; text-transform: uppercase; }
+.news-art span { display: block; font-weight: 500; line-height: 1.45; margin-top: 2px; }
+.news-art:hover span { color: var(--tg); }
+.news-cta { background: #1f2a37; border-color: #1f2a37; color: #fff; }
+.news-cta h3 { color: #fff; }
+.news-cta div { color: rgba(255, 255, 255, .78); font-size: 14.5px; line-height: 1.6; margin-bottom: 16px; }
+.news-cta a { display: inline-block; padding: 12px 22px; border-radius: 12px; background: #fff; color: #1f2a37;
+  font-weight: 600; text-decoration: none; transition: opacity .15s ease; }
+.news-cta a:hover { opacity: .9; }
+
+/* фото на весь экран */
+.tg-lightbox { position: fixed; inset: 0; z-index: 2000; background: rgba(10, 14, 20, .88); display: flex;
+  align-items: center; justify-content: center; padding: 24px; cursor: zoom-out; }
+.tg-lightbox img { max-width: 100%; max-height: 100%; border-radius: 8px; box-shadow: 0 20px 60px rgba(0, 0, 0, .5); }
+
+@media (max-width: 1000px) {
+  .news-layout { grid-template-columns: minmax(0, 1fr); grid-template-areas: "channel" "main" "extra"; }
+  .news-extra { position: static; }
+  .news-channel { display: grid; grid-template-columns: auto 1fr; gap: 0 16px; text-align: left; align-items: center; padding: 20px; }
+  .ch-ava { width: 64px; height: 64px; margin: 0; grid-row: span 3; }
+  .ch-desc, .ch-btn { grid-column: 1 / -1; }
+  .ch-desc { margin: 14px 0 16px; }
+}
+@media (max-width: 600px) {
+  .news-page .news-lead { font-size: .98rem; margin-bottom: 24px; }
+  .tg-card { padding: 18px 16px 14px; border-radius: 16px; }
+  .tg-text { font-size: 15px; }
+  .news-filters { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-left: -2px; }
+  .news-chip { white-space: nowrap; padding: 7px 15px; }
+  .tg-foot { font-size: 13px; }
+}
+
+/* ---------- страница статьи ---------- */
 .news-article { max-width: 820px; margin: 0 auto; }
 .news-back { display: inline-block; margin-top: 40px; font-size: 12px; letter-spacing: 1.5px; color: #666; text-decoration: none; }
 .news-back::before { content: '← '; }
+.news-date { display: block; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; color: #888; }
 .news-title { margin-top: 12px !important; line-height: 1.25; }
 .news-body { font-size: 1.05rem; line-height: 1.75; color: #333; }
 .news-body h4 { font-family: 'Playfair Display', serif; font-weight: 400; font-size: 1.4rem; margin: 32px 0 12px; }
@@ -22,4 +197,3 @@
 .site-title-link { color: #fff; text-decoration: none; }
 .site-title { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 400; letter-spacing: 3px;
   text-transform: uppercase; margin: 0; color: #fff; }
-@media (max-width: 600px) { .news-card { padding: 22px 20px; } .news-card h3 { font-size: 1.2rem; } }
