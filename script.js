@@ -373,7 +373,7 @@ const initialRUTexts = {};
 function setLanguage(lang) {
     currentLanguage = lang;
     updateContent();
-    localStorage.setItem('preferred-language', lang);
+    try { localStorage.setItem('preferred-language', lang); } catch (e) { /* хранилище недоступно */ }
     
     // Sync both language selectors
     const mainSelect = document.getElementById('language-select');
@@ -611,7 +611,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const languageSelect = document.getElementById('language-select');
     
     // Load preferred language from localStorage
-    const savedLanguage = localStorage.getItem('preferred-language');
+    let savedLanguage = null;
+    try { savedLanguage = localStorage.getItem('preferred-language'); } catch (e) { /* хранилище недоступно */ }
     if (savedLanguage && translations[savedLanguage]) {
         currentLanguage = savedLanguage;
         if (languageSelect) {
@@ -662,8 +663,8 @@ document.addEventListener('DOMContentLoaded', function() {
 // крупном масштабе экрана обрезал текст. Поэтому — свой список: нарисованные флаги (SVG) и подпись, ширина по
 // содержимому. Системный <select> остаётся спрятанным: через него по-прежнему работает setLanguage.
 const SITE_LANGS = [
-    { value: 'ru', code: 'RU', name: 'Русский' },
-    { value: 'uz', code: 'УЗ', name: 'Ўзбекча' },
+    { value: 'ru', code: 'РУ', name: 'Русский' },
+    { value: 'uz', code: 'ЎЗ', name: 'Ўзбекча' },
     { value: 'en', code: 'EN', name: 'English' }
 ];
 let flagSeq = 0;
@@ -756,7 +757,7 @@ function buildLanguageDropdowns() {
 }
 
 function updateLanguageOptionLabels() {
-    const labelByValue = { ru: 'RU', uz: 'УЗ', en: 'EN' };
+    const labelByValue = { ru: 'РУ', uz: 'ЎЗ', en: 'EN' };
     const selects = [document.getElementById('language-select'), document.getElementById('page-language-select')].filter(Boolean);
     selects.forEach(select => {
         Array.from(select.options).forEach(opt => {
