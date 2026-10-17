@@ -365,6 +365,16 @@ translations.en['nav-services-disputes'] = 'TAX DISPUTE REPRESENTATION';
 translations.en['nav-services-planning'] = 'TAX PLANNING AND ACCOUNTING';
 translations.en['nav-services-why'] = 'WHY CHOOSE US';
 
+// Подвал и согласие под формой записи (русский текст — из HTML)
+translations.uz['footer-privacy'] = 'Махфийлик сиёсати';
+translations.uz['footer-terms'] = 'Фойдаланиш шартлари';
+translations.uz['booking-consent'] = 'Аризани юбориб, шахсга доир маълумотларингиз қуйидагига мувофиқ қайта ишланишига розилик билдирасиз:';
+translations.uz['booking-consent-link'] = 'Махфийлик сиёсати';
+translations.en['footer-privacy'] = 'Privacy Policy';
+translations.en['footer-terms'] = 'Terms of Use';
+translations.en['booking-consent'] = 'By sending the request, you agree to the processing of your personal data in accordance with the';
+translations.en['booking-consent-link'] = 'Privacy Policy';
+
 // Language functionality
 let currentLanguage = 'ru';
 // Preserve initial RU texts from HTML to keep manual edits
@@ -409,6 +419,11 @@ function updateContent() {
         });
     }
 
+    // Длинные тексты (политика, условия) — отдельный блок на каждом языке
+    document.querySelectorAll('[data-lang-block]').forEach(block => {
+        block.hidden = block.getAttribute('data-lang-block') !== currentLanguage;
+    });
+
     // Update document language
     document.documentElement.lang = currentLanguage;
 
@@ -429,7 +444,9 @@ function getCurrentPageTitle() {
             'pricing': 'Цены - TAX CONSENSUS',
             'news': 'Новости - TAX CONSENSUS',
             'contact': 'Контакты - TAX CONSENSUS',
-            'booking': 'Запись на консультацию - TAX CONSENSUS'
+            'booking': 'Запись на консультацию - TAX CONSENSUS',
+            'privacy': 'Политика конфиденциальности - TAX CONSENSUS',
+            'terms': 'Условия использования - TAX CONSENSUS'
         },
         uz: {
             'index': 'TAX CONSENSUS - Солиқ маслаҳатчилиги',
@@ -438,7 +455,9 @@ function getCurrentPageTitle() {
             'pricing': 'Нархлар - TAX CONSENSUS',
             'news': 'Янгиликлар - TAX CONSENSUS',
             'contact': 'Алоқа - TAX CONSENSUS',
-            'booking': 'Консультацияга ёзилиш - TAX CONSENSUS'
+            'booking': 'Консультацияга ёзилиш - TAX CONSENSUS',
+            'privacy': 'Махфийлик сиёсати - TAX CONSENSUS',
+            'terms': 'Фойдаланиш шартлари - TAX CONSENSUS'
         },
         en: {
             'index': 'TAX CONSENSUS - Tax Consulting',
@@ -447,7 +466,9 @@ function getCurrentPageTitle() {
             'pricing': 'Pricing - TAX CONSENSUS',
             'news': 'News - TAX CONSENSUS',
             'contact': 'Contact - TAX CONSENSUS',
-            'booking': 'Book Consultation - TAX CONSENSUS'
+            'booking': 'Book Consultation - TAX CONSENSUS',
+            'privacy': 'Privacy Policy - TAX CONSENSUS',
+            'terms': 'Terms of Use - TAX CONSENSUS'
         }
     };
     

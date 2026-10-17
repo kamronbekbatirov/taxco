@@ -301,3 +301,45 @@ body.internal-page .page-cta a:hover { opacity: .9; }
     body.internal-page .service-detail li { padding-left: 40px; }
     body.internal-page .conclusion-text { font-size: 1.15rem; padding-left: 18px; }
 }
+
+/* ---------- подвал и правовые страницы (политика, условия) ---------- */
+body.internal-page .site-footer {
+    border-top: 1px solid #e6e6e6;
+    background: #fff;
+    padding: 22px 16px 28px;
+}
+body.internal-page .site-footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+    justify-content: center;
+    font-size: 0.85rem;
+    color: #888;
+}
+body.internal-page .site-footer a { color: #666; text-decoration: none; }
+body.internal-page .site-footer a:hover { color: #222; text-decoration: underline; }
+body.internal-page .booking-consent { margin: 12px 0 0; font-size: 0.8rem; line-height: 1.5; color: #777; }
+body.internal-page .booking-consent a { color: inherit; text-decoration: underline; }
+body.internal-page .page-content.legal { max-width: 860px; margin: 0 auto; }
+body.internal-page .legal-doc[hidden] { display: none; }
+body.internal-page .legal-updated { color: #888; font-size: 0.9rem; margin: -6px 0 18px; }
+body.internal-page .legal-intro { font-size: 1.02rem; line-height: 1.7; margin-bottom: 26px; }
+body.internal-page .legal-section { margin: 0 0 22px; }
+body.internal-page .legal-section h2 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 400;
+    font-size: 1.3rem;
+    margin: 0 0 10px;
+    color: #222;
+}
+body.internal-page .legal-section p,
+body.internal-page .legal-section li { line-height: 1.7; color: #333; }
+body.internal-page .legal-section ul { margin: 0; padding-left: 20px; }
+body.internal-page .legal-section li { margin: 0 0 6px; }
+body.internal-page .legal-see { margin-top: 28px; padding-top: 16px; border-top: 1px solid #eee; color: #666; }
+@media (max-width: 600px) {
+    body.internal-page .legal-section h2 { font-size: 1.15rem; }
+    body.internal-page .site-footer-inner { flex-direction: column; align-items: center; gap: 6px; }
+}
