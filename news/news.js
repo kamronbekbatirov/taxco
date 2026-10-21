@@ -1,13 +1,13 @@
 /* Новости и публикации: лента Telegram-канала (news.html) и переключение языка в статьях (news/<slug>.html).
-   Данные — /news/channel.json (посты канала) и /news/posts.json (статьи сайта); их обновляет панель TaxCo AI.
-   Файл собирает панель (app/site_assets/news.js → /news/news.js) — правьте исходник там. */
+   Данные - /news/channel.json (посты канала) и /news/posts.json (статьи сайта); их обновляет панель TaxCo AI.
+   Файл собирает панель (app/site_assets/news.js → /news/news.js) - правьте исходник там. */
 (function () {
   'use strict';
 
   var T = {
     ru: {
-      lead: 'Разборы налоговых новостей, разъяснения и практика — из Telegram-канала Ироды Аббасовны. Лента обновляется сама.',
-      all: 'Все', ru: 'Русский', uz: 'Ўзбекча', more: 'Показать ещё', expand: 'Читать полностью', collapse: 'Свернуть',
+      lead: 'Разборы налоговых новостей, разъяснения и практика - из Telegram-канала Ироды Аббасовны. Лента обновляется сама.',
+      all: 'Все', ru: 'Русский', uz: 'Ўзбекча', en: 'English', more: 'Показать ещё', expand: 'Читать полностью', collapse: 'Свернуть',
       open: 'Открыть в Telegram', fwd: 'Переслано из', poll: 'Опрос', quiz: 'Викторина', article: 'Статья на сайте',
       subscribe: 'Подписаться на канал', subs: 'подписчиков', articles: 'Статьи на сайте', today: 'Сегодня',
       yesterday: 'Вчера', ctaTitle: 'Нужна консультация?', ctaText: 'Разберём ваш вопрос по налогам и подготовим письменное заключение.',
@@ -16,8 +16,8 @@
       k: ' тыс.', m: ' млн', dec: ','
     },
     uz: {
-      lead: 'Солиқ янгиликлари таҳлили, тушунтиришлар ва амалиёт — Ирода Аббасовнанинг Telegram-каналидан. Лента ўзи янгиланади.',
-      all: 'Барчаси', ru: 'Русча', uz: 'Ўзбекча', more: 'Яна кўрсатиш', expand: 'Тўлиқ ўқиш', collapse: 'Йиғиш',
+      lead: 'Солиқ янгиликлари таҳлили, тушунтиришлар ва амалиёт - Ирода Аббасовнанинг Telegram-каналидан. Лента ўзи янгиланади.',
+      all: 'Барчаси', ru: 'Русча', uz: 'Ўзбекча', en: 'Инглизча', more: 'Яна кўрсатиш', expand: 'Тўлиқ ўқиш', collapse: 'Йиғиш',
       open: 'Telegram’да очиш', fwd: 'Қуйидагидан юборилган:', poll: 'Сўровнома', quiz: 'Викторина', article: 'Сайтдаги мақола',
       subscribe: 'Каналга обуна бўлиш', subs: 'обуначи', articles: 'Сайтдаги мақолалар', today: 'Бугун',
       yesterday: 'Кеча', ctaTitle: 'Маслаҳат керакми?', ctaText: 'Солиқ бўйича саволингизни кўриб чиқамиз ва ёзма хулоса тайёрлаймиз.',
@@ -27,7 +27,7 @@
     },
     en: {
       lead: 'Tax news analysis, explanations and practice from Iroda Abbasovna’s Telegram channel. The feed updates automatically.',
-      all: 'All', ru: 'Russian', uz: 'Uzbek', more: 'Show more', expand: 'Read more', collapse: 'Show less',
+      all: 'All', ru: 'Russian', uz: 'Uzbek', en: 'English', more: 'Show more', expand: 'Read more', collapse: 'Show less',
       open: 'Open in Telegram', fwd: 'Forwarded from', poll: 'Poll', quiz: 'Quiz', article: 'Article on the website',
       subscribe: 'Join the channel', subs: 'subscribers', articles: 'Articles', today: 'Today',
       yesterday: 'Yesterday', ctaTitle: 'Need a consultation?', ctaText: 'We will review your tax question and prepare a written opinion.',
@@ -65,7 +65,7 @@
 
   // ---------- форматирование ----------
   function fmtDate(iso) {
-    // в ISO уже ташкентское время (+05:00) — берём цифры как есть
+    // в ISO уже ташкентское время (+05:00) - берём цифры как есть
     var m = /^(\d{4})-(\d\d)-(\d\d)T(\d\d):(\d\d)/.exec(iso || '');
     if (!m) return '';
     var now = new Date(Date.now() + 5 * 3600e3), y = now.getUTCFullYear();
@@ -221,10 +221,14 @@
   var state = { data: null, articles: [], shown: PAGE, filter: null };
 
   function savedFilter() { try { return localStorage.getItem('news-filter'); } catch (e) { return null; } }
+  function hasEnglish() {
+    return !!(state.data && (state.data.posts || []).some(function (p) { return p.lang === 'en'; }));
+  }
   function currentFilter() {
     var f = state.filter || savedFilter();
-    if (f === 'ru' || f === 'uz' || f === 'all') return f;
-    return lang() === 'en' ? 'all' : lang();
+    if (f === 'ru' || f === 'uz' || f === 'all' || (f === 'en' && hasEnglish())) return f;
+    if (lang() === 'en') return hasEnglish() ? 'en' : 'all';  // английских постов нет - показываем все
+    return lang();
   }
   function visible(posts, f) {
     if (f === 'all') return posts;
@@ -237,7 +241,7 @@
     if (!box || !state.data) return;
     box.textContent = '';
     var f = currentFilter();
-    ['ru', 'uz', 'all'].forEach(function (key) {
+    (hasEnglish() ? ['ru', 'uz', 'en', 'all'] : ['ru', 'uz', 'all']).forEach(function (key) {
       var b = el('button', 'news-chip', t(key)); b.type = 'button';
       b.setAttribute('aria-pressed', String(f === key));
       b.addEventListener('click', function () {

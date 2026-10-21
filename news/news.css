@@ -1,5 +1,5 @@
 /* Новости и публикации: лента Telegram-канала (news.html) и статьи (news/<slug>.html).
-   Файл собирает панель TaxCo AI (app/site_assets/news.css → /news/news.css) — правьте исходник там. */
+   Файл собирает панель TaxCo AI (app/site_assets/news.css → /news/news.css) - правьте исходник там. */
 
 .news-page { --ink: #1f2a37; --ink-2: #4a5462; --muted: #8b95a1; --line: #e9edf1; --tg: #0088cc; --tg-soft: #f2f8fc; }
 
@@ -11,9 +11,9 @@
 .news-layout { max-width: 1180px; margin: 0 auto; display: grid; gap: 28px 40px; align-items: start;
   grid-template-columns: minmax(0, 1fr) 340px; grid-template-areas: "main side"; }
 .news-main { grid-area: main; min-width: 0; }
-/* правая колонка — одним блоком: канал, под ним запись на консультацию; едет вместе с прокруткой */
+/* правая колонка - одним блоком: канал, под ним запись на консультацию; едет вместе с прокруткой */
 .news-side { grid-area: side; display: grid; gap: 20px; position: sticky; top: 24px;
-  max-height: calc(100vh - 48px); overflow-y: auto; scrollbar-width: none; }  /* низкий экран — блок не обрезается */
+  max-height: calc(100vh - 48px); overflow-y: auto; scrollbar-width: none; }  /* низкий экран - блок не обрезается */
 .news-side::-webkit-scrollbar { display: none; }
 .news-side .ch-desc { display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; }
 .news-side .ch-desc[hidden] { display: none; }
@@ -168,7 +168,7 @@
 .tg-lightbox img { max-width: 100%; max-height: 100%; border-radius: 8px; box-shadow: 0 20px 60px rgba(0, 0, 0, .5); }
 
 @media (max-width: 1000px) {
-  /* телефон: канал — над лентой, запись на консультацию — под ней */
+  /* телефон: канал - над лентой, запись на консультацию - под ней */
   .news-layout { grid-template-columns: minmax(0, 1fr); grid-template-areas: "channel" "main" "cta" "articles"; }
   .news-side { display: contents; }
   .news-side > .news-channel { grid-area: channel; }

@@ -25,6 +25,6 @@ Thumbs.db
 news/posts.json
 news/*.html
 
-# лента Telegram-канала — собирает панель TaxCo AI
+# лента Telegram-канала - собирает панель TaxCo AI
 news/channel.json
 news/tg/

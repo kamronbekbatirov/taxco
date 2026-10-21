@@ -1,6 +1,6 @@
-/* TAX CONSENSUS — обновлённое оформление страниц «О нас», «Услуги», «Цены», «Контакты» и «Запись»
+/* TAX CONSENSUS - обновлённое оформление страниц «О нас», «Услуги», «Цены», «Контакты» и «Запись»
    в стиле страницы «Новости и публикации» (октябрь 2026). Отдельный слой поверх styles.css.
-   Вернуть прежний вид: откатить коммит «Modern design» в git (git revert) —
+   Вернуть прежний вид: откатить коммит «Modern design» в git (git revert) -
    или хотя бы убрать со страниц строку <link rel="stylesheet" href="theme.css…">. */
 
 body.internal-page {
@@ -20,7 +20,7 @@ body.internal-page {
 
 /* ---------- ширина как у ленты новостей ---------- */
 body.internal-page { background: #fff; }
-body.internal-page .page { display: flow-root; }  /* отступ заголовка — внутри белой страницы, без щели под вкладками */
+body.internal-page .page { display: flow-root; }  /* отступ заголовка - внутри белой страницы, без щели под вкладками */
 body.internal-page .page-content,
 body.internal-page .secondary-nav-container { max-width: 1260px; }
 
@@ -48,7 +48,7 @@ body.internal-page .about-content > h3,
 body.internal-page .about-content > h4,
 body.internal-page .service-detail > p { max-width: 820px; }
 
-/* вводный абзац — крупнее, как лид в статье */
+/* вводный абзац - крупнее, как лид в статье */
 body.internal-page .intro-text,
 body.internal-page .pricing-intro,
 body.internal-page .contact-intro p,
@@ -84,7 +84,7 @@ body.internal-page .service-detail li::before {
     content: ''; position: absolute; left: 0; top: 16px; width: 26px; height: 26px; border-radius: 50%;
     background: #eef2f6 var(--t-check) center / 14px no-repeat;
 }
-/* «Наша экспертиза» — с номерами */
+/* «Наша экспертиза» - с номерами */
 body.internal-page .expertise-list { counter-reset: exp; }
 body.internal-page .expertise-list li { counter-increment: exp; }
 body.internal-page .expertise-list li::before {
@@ -93,7 +93,7 @@ body.internal-page .expertise-list li::before {
     text-align: center; letter-spacing: .4px;
 }
 
-/* ---------- «Наши ценности» — карточки: название слева, пояснение справа ---------- */
+/* ---------- «Наши ценности» - карточки: название слева, пояснение справа ---------- */
 body.internal-page .company-values { list-style: none; max-width: 820px; padding: 0; margin: 6px 0 30px; display: grid;
     gap: 14px; }
 body.internal-page .company-values li { display: grid; grid-template-columns: minmax(0, 230px) minmax(0, 1fr);
@@ -162,7 +162,7 @@ body.internal-page .map-container h4 { margin: 2px 0 16px; text-align: left; fon
 body.internal-page .yandex-map { margin: 0; border-radius: 14px; box-shadow: none; border: 1px solid var(--t-line); }
 
 /* ---------- «Запись» ---------- */
-/* форма — основная колонка слева, памятка — справа, как правая колонка на других страницах */
+/* форма - основная колонка слева, памятка - справа, как правая колонка на других страницах */
 body.internal-page .booking-container { max-width: none; margin: 0; padding: 0; display: grid; gap: 22px 40px;
     align-items: start; grid-template-columns: minmax(0, 1fr) 340px; }
 body.internal-page .booking-form { grid-column: 1; grid-row: 1; }
@@ -241,11 +241,11 @@ body.internal-page .page-cta a:hover { opacity: .9; }
 
 /* ---------- планшет и телефон ---------- */
 @media (max-width: 1000px) {
-    /* правая колонка уходит под текст: две карточки рядом, на телефоне — друг под другом */
+    /* правая колонка уходит под текст: две карточки рядом, на телефоне - друг под другом */
     body.internal-page .page-layout { grid-template-columns: minmax(0, 1fr); }
     body.internal-page .page-side { position: static; margin-top: 40px; grid-template-columns: repeat(2, minmax(0, 1fr));
         align-items: start; }
-    /* «Запись»: памятка — над формой */
+    /* «Запись»: памятка - над формой */
     body.internal-page .booking-container { grid-template-columns: minmax(0, 1fr); }
     body.internal-page .booking-form,
     body.internal-page .booking-info { grid-column: auto; grid-row: auto; }
@@ -258,7 +258,7 @@ body.internal-page .page-cta a:hover { opacity: .9; }
     body.internal-page .advantage-item::before { width: 40px; font-size: 1.9rem; }
 }
 @media (max-width: 900px) {
-    /* вкладки — «таблетками» в несколько строк, всё видно сразу */
+    /* вкладки - «таблетками» в несколько строк, всё видно сразу */
     body.internal-page .secondary-nav { padding: 14px 0; }
     body.internal-page .secondary-nav-container { flex-wrap: wrap; gap: 8px; padding: 0 20px; }
     body.internal-page .secondary-nav-item { padding: 8px 14px; border: 1px solid #d9dfe5; border-radius: 999px;

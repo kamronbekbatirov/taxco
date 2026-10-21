@@ -86,7 +86,7 @@ body {
 
 .language-selector { cursor: pointer; }
 .language-selector::before {
-    content: '🌐';  /* флаги на Windows показываются буквами — глобус виден везде */
+    content: '🌐';  /* флаги на Windows показываются буквами - глобус виден везде */
     margin-right: 8px;
     font-size: 14px;
 }
@@ -1567,7 +1567,7 @@ body.home-page {
     .lang-btn { padding: 8px 10px 8px 9px; font-size: 12.5px; }
 }
 
-/* ---------- Мобильное меню: длинный пункт («Новости и публикации») — по центру и с полями, на узких экранах мельче ---------- */
+/* ---------- Мобильное меню: длинный пункт («Новости и публикации») - по центру и с полями, на узких экранах мельче ---------- */
 .mobile-menu a,
 .page-header .page-mobile-menu a {
     box-sizing: border-box;
